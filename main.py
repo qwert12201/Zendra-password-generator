@@ -1,11 +1,25 @@
 import base64
 import random
 import sys
+import os
 
-from pyperclip import copy as password_copy
-from PyQt6 import QtWidgets, QtCore
-from design import Ui_MainWindow
-from functools import partial
+try:
+    from pyperclip import copy as password_copy
+    from PyQt6 import QtWidgets, QtCore
+    from design import Ui_MainWindow
+    from functools import partial
+except (ImportError, ModuleNotFoundError):
+    print("You haven't install all modules from requirements.txt, I can try to do it")
+    choice = input("yes / no ").strip().lower()
+    while choice not in ("yes", "no"):
+        choice = input("yes / no ").strip().lower()
+    if choice == "yes":
+        os.system("pip install -r requirements.txt")
+        print("Please restart the program")
+        sys.exit()
+    else:
+        raise ImportError("Modules haven't installed")
+
 
 from hashes import *
 
@@ -29,14 +43,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display = "Добро пожаловать!"
         self.ui.lineEdit.setText(self.display)
         self.boxes = [self.ui.BaseBox, self.ui.CapsBox, self.ui.RandBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
-        self.version = "1.0"
+        self.version = "1.02"
         self._rippers = ("Вы не выбрали ни одного параметра!", "Добро пожаловать!", "")
         self.ui.label_3.setText("Version: " + self.version)
         self.hashes = [self.ui.actionsha512, self.ui.actionMD5, self.ui.actionsha256, self.ui.actionsha_1]
-
-        # MenuBar
         self.file = None
-        self.hash = None
+        self.ui.label_4.setText("")
 
         # PushButtons
         self.ui.GeneratePush.clicked.connect(self.generator)
@@ -67,6 +79,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 pass
             self.file = file
             self.info_label("Файл сохранения указан.")
+        self.info_label("Отменено.")
 
     def copy_password(self):
         if self.display not in self._rippers:

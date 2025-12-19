@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(627, 386)
-        MainWindow.setStyleSheet("background-color: rgb(59, 59, 59)")
+        MainWindow.setStyleSheet("background-color: rgb(59, 59, 59);")
         MainWindow.setDockNestingEnabled(False)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setStyleSheet("QPushButton {\n"
@@ -22,13 +22,21 @@ class Ui_MainWindow(object):
 "    font-size: 10pt;\n"
 "    font-family: \"Segoe Print\";\n"
 "    color: rgb(255,255,255);\n"
-"}\n"
+"    \n"
+"}  \n"
 "\n"
 "QPushButton:hover {\n"
 "    border: 2px solid #000000;\n"
 "    background-color: rgb(255, 255, 255);\n"
 "    color: black;\n"
-"} ")
+"}\n"
+"\n"
+"QLabel {\n"
+"    color: #ffffff;\n"
+"    background-color: rgb(59, 59, 59);\n"
+"    font: 75 italic 10pt \"Segoe UI\";\n"
+"}\n"
+"")
         self.centralwidget.setObjectName("centralwidget")
         self.lineEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(70, 20, 371, 41))
@@ -40,8 +48,7 @@ class Ui_MainWindow(object):
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
         self.label.setGeometry(QtCore.QRect(10, 20, 61, 41))
-        self.label.setStyleSheet("font-family: \"Segoe Print\"; \n"
-"color: white")
+        self.label.setStyleSheet("")
         self.label.setTextFormat(QtCore.Qt.TextFormat.RichText)
         self.label.setObjectName("label")
         self.GeneratePush = QtWidgets.QPushButton(parent=self.centralwidget)
@@ -50,18 +57,7 @@ class Ui_MainWindow(object):
         self.GeneratePush.setObjectName("GeneratePush")
         self.ClearPush = QtWidgets.QPushButton(parent=self.centralwidget)
         self.ClearPush.setGeometry(QtCore.QRect(74, 70, 71, 23))
-        self.ClearPush.setStyleSheet("QPushButton {\n"
-"    border-radius: 10px;\n"
-"    background-color: #000000;\n"
-"    font-size: 10pt;\n"
-"    font-family: \"Segoe Print\";\n"
-"    color: rgb(255,255,255);\n"
-"    \n"
-"}  \n"
-"\n"
-"QPushButton:hover {\n"
-"    border: 2px solid rgb(255, 255, 255)\n"
-"} ")
+        self.ClearPush.setStyleSheet("")
         self.ClearPush.setObjectName("ClearPush")
         self.RandomPush = QtWidgets.QPushButton(parent=self.centralwidget)
         self.RandomPush.setGeometry(QtCore.QRect(260, 70, 101, 23))
@@ -72,14 +68,16 @@ class Ui_MainWindow(object):
         self.formGroupBox.setStyleSheet("QCheckBox {\n"
 "    font-family: \"Segoe Print\"; \n"
 "    color: white;\n"
+"    font-size: 13px;\n"
 "}\n"
 "    \n"
-"QCheckBox:hover {\n"
+"QCheckBox:hover {    \n"
+"    background-color: #ffffff;\n"
 "    border-radius: 10px;\n"
-"    border: 2px solid white;\n"
-"    \n"
-"\n"
-"}")
+"    border: 2px solid black;\n"
+"    color: black;    \n"
+"}\n"
+"")
         self.formGroupBox.setObjectName("formGroupBox")
         self.formLayout = QtWidgets.QFormLayout(self.formGroupBox)
         self.formLayout.setContentsMargins(10, 4, 10, -1)
@@ -87,7 +85,7 @@ class Ui_MainWindow(object):
         self.formLayout.setObjectName("formLayout")
         self.label_2 = QtWidgets.QLabel(parent=self.formGroupBox)
         self.label_2.setStyleSheet("font-family: \"Segoe Print\"; \n"
-"color: white")
+"color: white;")
         self.label_2.setObjectName("label_2")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_2)
         self.NumBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
@@ -116,29 +114,25 @@ class Ui_MainWindow(object):
         self.formLayout.setWidget(6, QtWidgets.QFormLayout.ItemRole.LabelRole, self.BaseBox)
         self.CopyPush = QtWidgets.QPushButton(parent=self.centralwidget)
         self.CopyPush.setGeometry(QtCore.QRect(370, 70, 61, 23))
-        self.CopyPush.setStyleSheet("QPushButton {\n"
-"    border-radius: 10px;\n"
-"    background-color: #000000;\n"
-"    font-size: 10pt;\n"
-"    font-family: \"Segoe Print\";\n"
-"    color: rgb(255,255,255);\n"
-"\n"
-"}\n"
-"  \n"
-"QPushButton:hover {\n"
-"    border: 2px solid rgb(255, 255, 255)\n"
-"} ")
+        self.CopyPush.setStyleSheet("")
         self.CopyPush.setObjectName("CopyPush")
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(550, 360, 71, 16))
+        self.label_3.setGeometry(QtCore.QRect(530, 340, 91, 21))
+        self.label_3.setStyleSheet("")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(460, 230, 161, 16))
+        self.label_4.setGeometry(QtCore.QRect(440, 230, 181, 21))
         font = QtGui.QFont()
+        font.setFamily("Segoe UI")
         font.setPointSize(10)
+        font.setBold(False)
+        font.setItalic(True)
+        font.setWeight(9)
         self.label_4.setFont(font)
+        self.label_4.setStyleSheet("")
         self.label_4.setText("")
+        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_4.setObjectName("label_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QtWidgets.QMenuBar(parent=MainWindow)
