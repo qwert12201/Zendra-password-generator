@@ -12,8 +12,13 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(627, 386)
-        MainWindow.setStyleSheet("background-color: rgb(59, 59, 59);")
+        MainWindow.resize(617, 386)
+        MainWindow.setStyleSheet("background-color: rgb(59, 59, 59);\n"
+"    background-color: black;\n"
+"    color: white;\n"
+"    border: 1px solid #555;\n"
+"    border-color: rgb(207, 207, 207);\n"
+"")
         MainWindow.setDockNestingEnabled(False)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setStyleSheet("QPushButton {\n"
@@ -30,12 +35,20 @@ class Ui_MainWindow(object):
 "    background-color: rgb(255, 255, 255);\n"
 "    color: black;\n"
 "}\n"
+"QPushButton:pressed{\n"
+"    background-color: black;\n"
+"    color: white;\n"
+"    border: 2px solid rgb(85, 0, 255)\n"
 "\n"
+"\n"
+"}\n"
 "QLabel {\n"
 "    color: #ffffff;\n"
-"    background-color: rgb(59, 59, 59);\n"
+"    border-color: rgb(85, 0, 255);\n"
 "    font: 75 italic 10pt \"Segoe UI\";\n"
+"    border-radius: 10px;\n"
 "}\n"
+"\n"
 "")
         self.centralwidget.setObjectName("centralwidget")
         self.lineEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
@@ -43,6 +56,10 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("QLineEdit {\n"
+"    border-radius: 10px;\n"
+"    border-color: rgb(85, 0, 255);\n"
+"}")
         self.lineEdit.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lineEdit.setReadOnly(True)
         self.lineEdit.setObjectName("lineEdit")
@@ -64,65 +81,83 @@ class Ui_MainWindow(object):
         self.RandomPush.setStyleSheet("")
         self.RandomPush.setObjectName("RandomPush")
         self.formGroupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.formGroupBox.setGeometry(QtCore.QRect(450, 5, 160, 221))
+        self.formGroupBox.setGeometry(QtCore.QRect(450, 5, 160, 201))
         self.formGroupBox.setStyleSheet("QCheckBox {\n"
 "    font-family: \"Segoe Print\"; \n"
 "    color: white;\n"
 "    font-size: 13px;\n"
+"    border-radius: 10px;\n"
+"    border-color: rgb(85, 0, 255)\n"
 "}\n"
 "    \n"
 "QCheckBox:hover {    \n"
 "    background-color: #ffffff;\n"
-"    border-radius: 10px;\n"
-"    border: 2px solid black;\n"
+"\n"
 "    color: black;    \n"
 "}\n"
-"")
+"\n"
+"\n"
+"\n"
+"QGroupBox{\n"
+"    border-radius: 10px; \n"
+"    border-color: rgb(85, 0, 255);\n"
+"}\n"
+"\n"
+"QLabel {\n"
+"    border-color: rgb(85, 0, 255);\n"
+"}")
         self.formGroupBox.setObjectName("formGroupBox")
-        self.formLayout = QtWidgets.QFormLayout(self.formGroupBox)
-        self.formLayout.setContentsMargins(10, 4, 10, -1)
-        self.formLayout.setHorizontalSpacing(10)
-        self.formLayout.setObjectName("formLayout")
         self.label_2 = QtWidgets.QLabel(parent=self.formGroupBox)
+        self.label_2.setGeometry(QtCore.QRect(11, 5, 52, 18))
         self.label_2.setStyleSheet("font-family: \"Segoe Print\"; \n"
 "color: white;")
         self.label_2.setObjectName("label_2")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_2)
         self.NumBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
+        self.NumBox.setGeometry(QtCore.QRect(11, 29, 81, 17))
         self.NumBox.setStyleSheet("")
         self.NumBox.setObjectName("NumBox")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.NumBox)
         self.LetterBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
+        self.LetterBox.setGeometry(QtCore.QRect(11, 52, 68, 18))
         self.LetterBox.setStyleSheet("")
         self.LetterBox.setObjectName("LetterBox")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.LetterBox)
         self.SpecialBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
+        self.SpecialBox.setGeometry(QtCore.QRect(11, 76, 126, 17))
         self.SpecialBox.setStyleSheet("")
         self.SpecialBox.setObjectName("SpecialBox")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.SpecialBox)
         self.RandBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
+        self.RandBox.setGeometry(QtCore.QRect(11, 99, 122, 18))
         self.RandBox.setStyleSheet("")
         self.RandBox.setObjectName("RandBox")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.RandBox)
         self.CapsBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
+        self.CapsBox.setGeometry(QtCore.QRect(11, 123, 57, 17))
         self.CapsBox.setStyleSheet("")
         self.CapsBox.setObjectName("CapsBox")
-        self.formLayout.setWidget(5, QtWidgets.QFormLayout.ItemRole.LabelRole, self.CapsBox)
         self.BaseBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
+        self.BaseBox.setGeometry(QtCore.QRect(11, 146, 72, 18))
         self.BaseBox.setStyleSheet("")
         self.BaseBox.setObjectName("BaseBox")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.ItemRole.LabelRole, self.BaseBox)
+        self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.formGroupBox)
+        self.lineEdit_2.setGeometry(QtCore.QRect(11, 169, 31, 18))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
+        self.lineEdit_2.setSizePolicy(sizePolicy)
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.label_5 = QtWidgets.QLabel(parent=self.formGroupBox)
+        self.label_5.setGeometry(QtCore.QRect(49, 169, 51, 20))
+        self.label_5.setObjectName("label_5")
         self.CopyPush = QtWidgets.QPushButton(parent=self.centralwidget)
         self.CopyPush.setGeometry(QtCore.QRect(370, 70, 61, 23))
         self.CopyPush.setStyleSheet("")
         self.CopyPush.setObjectName("CopyPush")
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(530, 340, 91, 21))
+        self.label_3.setGeometry(QtCore.QRect(515, 335, 91, 21))
         self.label_3.setStyleSheet("")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(440, 230, 181, 21))
+        self.label_4.setGeometry(QtCore.QRect(430, 210, 181, 21))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(10)
@@ -136,12 +171,10 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName("label_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 627, 21))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 617, 23))
         self.menuBar.setObjectName("menuBar")
         self.menuFileSaver = QtWidgets.QMenu(parent=self.menuBar)
         self.menuFileSaver.setObjectName("menuFileSaver")
-        self.menuGenerate_multiply_times = QtWidgets.QMenu(parent=self.menuFileSaver)
-        self.menuGenerate_multiply_times.setObjectName("menuGenerate_multiply_times")
         self.menuHashes = QtWidgets.QMenu(parent=self.menuBar)
         self.menuHashes.setObjectName("menuHashes")
         self.menuAbout = QtWidgets.QMenu(parent=self.menuBar)
@@ -181,16 +214,11 @@ class Ui_MainWindow(object):
         self.action100.setObjectName("action100")
         self.actionNot_save = QtGui.QAction(parent=MainWindow)
         self.actionNot_save.setObjectName("actionNot_save")
-        self.menuGenerate_multiply_times.addAction(self.action2)
-        self.menuGenerate_multiply_times.addAction(self.action5)
-        self.menuGenerate_multiply_times.addAction(self.action10)
-        self.menuGenerate_multiply_times.addAction(self.action20)
-        self.menuGenerate_multiply_times.addAction(self.action50)
-        self.menuGenerate_multiply_times.addAction(self.action100)
+        self.actionGenerate_Multiply_Times = QtGui.QAction(parent=MainWindow)
+        self.actionGenerate_Multiply_Times.setObjectName("actionGenerate_Multiply_Times")
         self.menuFileSaver.addSeparator()
-        self.menuFileSaver.addAction(self.actionFile)
         self.menuFileSaver.addSeparator()
-        self.menuFileSaver.addAction(self.menuGenerate_multiply_times.menuAction())
+        self.menuFileSaver.addAction(self.actionGenerate_Multiply_Times)
         self.menuHashes.addAction(self.actionMD5)
         self.menuHashes.addAction(self.actionsha512)
         self.menuHashes.addAction(self.actionsha256)
@@ -216,9 +244,10 @@ class Ui_MainWindow(object):
         self.RandBox.setText(_translate("MainWindow", "Random length"))
         self.CapsBox.setText(_translate("MainWindow", "CAPS"))
         self.BaseBox.setText(_translate("MainWindow", "Base64"))
+        self.lineEdit_2.setText(_translate("MainWindow", "8"))
+        self.label_5.setText(_translate("MainWindow", "Length"))
         self.CopyPush.setText(_translate("MainWindow", "Copy"))
         self.menuFileSaver.setTitle(_translate("MainWindow", "File"))
-        self.menuGenerate_multiply_times.setTitle(_translate("MainWindow", "Generate multiply times"))
         self.menuHashes.setTitle(_translate("MainWindow", "Hashes"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionFile.setText(_translate("MainWindow", "Save to file"))
@@ -238,3 +267,4 @@ class Ui_MainWindow(object):
         self.action50.setText(_translate("MainWindow", "50"))
         self.action100.setText(_translate("MainWindow", "100"))
         self.actionNot_save.setText(_translate("MainWindow", "Not save"))
+        self.actionGenerate_Multiply_Times.setText(_translate("MainWindow", "Generate Multiply Times"))
