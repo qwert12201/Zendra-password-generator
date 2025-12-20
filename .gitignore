@@ -1,4 +1,3 @@
-*.txt
 .git/
 __pycache__/
 build/
