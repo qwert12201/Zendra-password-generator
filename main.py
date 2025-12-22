@@ -98,15 +98,15 @@ class ModuleWindow_1(QtWidgets.QDialog):
         length = self.ui.lineEdit_2.text()
         value = self.ui.lineEdit.text()
         box_check = [box.isChecked() for box in self.boxes]
-        if not length.isdigit():
+        if not length.isdigit() or int(length) < 1:
             QtWidgets.QMessageBox.critical(self, "Length", "Incorrect length")
             return
-        if not value.isdigit():
-            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in the generation field")
+        if not value.isdigit() or int(value) < 1:
+            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in the count field")
             self.ui.lineEdit.setText("")
             return
         if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
-            QtWidgets.QMessageBox.critical(self, "Options", "Incorrect options")
+            QtWidgets.QMessageBox.critical(self, "Options", "You haven't select any option")
             return
         if not self.file:
             QtWidgets.QMessageBox.critical(self, "File", "You have to select a file to save passwords")
@@ -133,13 +133,11 @@ class ModuleWindow_1(QtWidgets.QDialog):
             for i in range(value):
                 a = time.perf_counter()
                 size = int(os.lstat(self.file)[6]) * 8
-                self.ui.label_6.setText("File size: " + type_of_bit(size)) if size else self.ui.label_6.setText("File size: 0 БИТ")
                 self.ui.label_7.setText("Passwords generated: " + str(i))
                 self.ui.label_8.setText("Seconds remaining: " + remaining)
                 if not self._iswork:
                     return
                 result = ""
-                self.ui.label_9.setText("Current password: " + result)
                 self.ui.progressBar.setValue(int((i / value) * 100))
                 for _ in range(length):
                     choice = random.choice(lists)
@@ -148,9 +146,11 @@ class ModuleWindow_1(QtWidgets.QDialog):
                     result = base64.b64encode(result.encode("utf-8")).decode()
                 prev = remaining
                 remaining = str(int((time.perf_counter() - a) * (value - i))) if i % 2000 == 0 else prev
-                self.ui.label_9.setText("Current password: " + str(result))
                 QtWidgets.QApplication.processEvents()
+                self.ui.label_6.setText("File size: " + type_of_bit(size))
+                self.ui.label_9.setText('Current password: ' + result + '')
                 f.write(result + "\n")
+        self.ui.label_6.setText("File size: " + type_of_bit(size))
         self.ui.label_7.setText(f"Passwords generated: {value}")
         self.ui.progressBar.setValue(100)
         self._iswork = False
@@ -167,7 +167,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display = "Добро пожаловать!"
         self.ui.lineEdit.setText(self.display)
         self.boxes = [self.ui.BaseBox, self.ui.RandBox, self.ui.CapsBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
-        self.version = "1.03"
+        self.version = "1.04"
         self._rippers = ("Вы не выбрали ни одного параметра!", "Добро пожаловать!", "")
         self.ui.label_3.setText("Version: " + self.version)
         self.hashes = [self.ui.actionsha512, self.ui.actionMD5, self.ui.actionsha256, self.ui.actionsha_1]
@@ -213,12 +213,12 @@ class MainWindow(QtWidgets.QMainWindow):
         length = self.ui.lineEdit_2.text()
         result = ""
         box_check = [box.isChecked() for box in self.boxes]
-        if not length.isdigit():
-            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in generation number")
+        if not length.isdigit() or int(length) < 1:
+            QtWidgets.QMessageBox.critical(self, "Length", "Incorrect length")
             self.ui.lineEdit.setText("")
             return
         if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
-            QtWidgets.QMessageBox.critical(self, "Options", "Incorrect options")
+            QtWidgets.QMessageBox.critical(self, "Options", "You haven't select any option")
             return
         length = int(length)
         if self.ui.NumBox.isChecked():
