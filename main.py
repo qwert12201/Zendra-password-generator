@@ -2,6 +2,7 @@ import base64
 import random
 import sys
 import os
+import time
 
 try:
     from pyperclip import copy as password_copy
@@ -41,10 +42,12 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.ui.setupUi(self)
         self.setFixedSize(self.size())
         self.setWindowTitle("Multiply Generator")
-        self.boxes = [self.ui.BaseBox2, self.ui.CapsBox2, self.ui.RandBox2, self.ui.LetterBox2, self.ui.NumBox2, self.ui.SpecialBox2]
+        self.boxes = [self.ui.BaseBox2, self.ui.RandBox2, self.ui.CapsBox2, self.ui.LetterBox2, self.ui.NumBox2, self.ui.SpecialBox2]
         self.ui.Nativelabel.setText("")
         self.file = None
-        self._iswork = False
+        self.labels = [self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8, self.ui.label_9]
+        self.reset_settings()
+        self.counter = 0
 
         self.ui.GenerateMultiply.clicked.connect(self.generateMultiply)
         self.ui.SelectFile.clicked.connect(self.selectFile)
@@ -62,11 +65,14 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.ui.progressBar.setValue(0)
         self._iswork = False
         self.ui.lineEdit.setReadOnly(False)
+        for label in self.labels:
+            label.hide()
 
     def CancelGeneration(self):
-        choice = QtWidgets.QMessageBox.warning(self, "Warning", "Do you want to stop generation?", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
-        if choice == QtWidgets.QMessageBox.StandardButton.Yes:
-            self.update_native_display("Отменено.")
+        if self._iswork:
+            choice = QtWidgets.QMessageBox.warning(self, "Warning", "Do you want to stop generation?", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+            if choice == QtWidgets.QMessageBox.StandardButton.Yes:
+                self.update_native_display("Отменено.")
         self.reset_settings()
 
     @staticmethod
@@ -82,22 +88,24 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.update_native_display("Файл выбран успешно!")
 
     def generateMultiply(self):
+        self.reset_settings()
         self._iswork = True
         lists = []
         length = self.ui.lineEdit_2.text()
         value = self.ui.lineEdit.text()
-        if not any(box.isChecked() for box in self.boxes):  # not - инвертирует -> если все = False
-            QtWidgets.QMessageBox.critical(self, "Options", "You have to select at least one option")
+        box_check = [box.isChecked() for box in self.boxes]
+        if not length.isdigit():
+            QtWidgets.QMessageBox.critical(self, "Length", "Incorrect length")
+            return
+        if not value.isdigit():
+            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in the generation field")
+            self.ui.lineEdit.setText("")
+            return
+        if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
+            QtWidgets.QMessageBox.critical(self, "Options", "Incorrect options")
             return
         if not self.file:
             QtWidgets.QMessageBox.critical(self, "File", "You have to select a file to save passwords")
-            return
-        if not length.isdigit():
-            QtWidgets.QMessageBox.critical(self, "length", "Incorrect length")
-            return
-        if not value.isdigit():
-            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in generation number")
-            self.ui.lineEdit.setText("")
             return
         if self.ui.NumBox2.isChecked():
             lists.append(numbers)
@@ -111,23 +119,39 @@ class ModuleWindow_1(QtWidgets.QDialog):
             lists.append(big_letters)
         value = int(value)
         length = int(length)
+        for label in self.labels:
+            label.show()
         with open(self.file, "a", encoding="utf-8") as f:
             self.update_native_display("Генерация начата.")
             self.ui.lineEdit.setReadOnly(True)
+            self.ui.label_5.setText("File: " + self.file.split("/")[-1])
+            remaining = "0"
             for i in range(value):
+                a = time.perf_counter()
+                size = int(os.lstat(self.file)[6]) * 8
+                self.ui.label_6.setText("File size: " + type_of_bit(size)) if size else self.ui.label_6.setText("File size: 0 БИТ")
+                self.ui.label_7.setText("Passwords generated: " + str(i))
+                self.ui.label_8.setText("Seconds remaining: " + remaining)
                 if not self._iswork:
                     return
                 result = ""
+                self.ui.label_9.setText("Current password: " + result)
                 self.ui.progressBar.setValue(int((i / value) * 100))
                 for _ in range(length):
                     choice = random.choice(lists)
                     result += self.one_char(choice)
                 if self.ui.BaseBox2.isChecked():
                     result = base64.b64encode(result.encode("utf-8")).decode()
+                prev = remaining
+                remaining = str(int((time.perf_counter() - a) * (value - i))) if i % 2000 == 0 else prev
+                self.ui.label_9.setText("Current password: " + str(result))
                 QtWidgets.QApplication.processEvents()
                 f.write(result + "\n")
+        self.ui.label_7.setText(f"Passwords generated: {value}")
+        self.ui.progressBar.setValue(100)
+        self._iswork = False
+        self.ui.lineEdit.setReadOnly(False)
         self.update_native_display("Пароли сгенерированы!")
-        self.reset_settings()
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -139,7 +163,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display = "Добро пожаловать!"
         self.ui.lineEdit.setText(self.display)
         self.boxes = [self.ui.BaseBox, self.ui.CapsBox, self.ui.RandBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
-        self.version = "1.02"
+        self.version = "1.03"
         self._rippers = ("Вы не выбрали ни одного параметра!", "Добро пожаловать!", "")
         self.ui.label_3.setText("Version: " + self.version)
         self.hashes = [self.ui.actionsha512, self.ui.actionMD5, self.ui.actionsha256, self.ui.actionsha_1]

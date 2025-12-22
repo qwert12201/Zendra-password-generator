@@ -1,7 +1,6 @@
 .git/
 __pycache__/
 build/
-dist/
 *.spec
 *.ui
 env/

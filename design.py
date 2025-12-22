@@ -12,41 +12,34 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(617, 386)
-        MainWindow.setStyleSheet("background-color: rgb(59, 59, 59);\n"
-"    background-color: black;\n"
-"    color: white;\n"
-"    border: 1px solid #555;\n"
-"    border-color: rgb(207, 207, 207);\n"
-"")
+        MainWindow.resize(623, 380)
+        MainWindow.setStyleSheet("background-color: rgb(36, 35, 35);\n"
+"color: white;")
         MainWindow.setDockNestingEnabled(False)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
-        self.centralwidget.setStyleSheet("QPushButton {\n"
+        self.centralwidget.setStyleSheet("QLabel {    \n"
+"    font: 400 8pt \"Microsoft YaHei UI\";\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"\n"
+"QPushButton {\n"
+"    font: 400 8pt \"Microsoft YaHei UI\";    \n"
 "    border-radius: 10px;\n"
 "    background-color: #000000;\n"
 "    font-size: 10pt;\n"
-"    font-family: \"Segoe Print\";\n"
 "    color: rgb(255,255,255);\n"
-"    \n"
-"}  \n"
+"}\n"
 "\n"
 "QPushButton:hover {\n"
 "    border: 2px solid #000000;\n"
 "    background-color: rgb(255, 255, 255);\n"
-"    color: black;\n"
+"    color: black;    \n"
 "}\n"
+"\n"
 "QPushButton:pressed{\n"
 "    background-color: black;\n"
 "    color: white;\n"
-"    border: 2px solid rgb(85, 0, 255)\n"
-"\n"
-"\n"
-"}\n"
-"QLabel {\n"
-"    color: #ffffff;\n"
-"    border-color: rgb(85, 0, 255);\n"
-"    font: 75 italic 10pt \"Segoe UI\";\n"
-"    border-radius: 10px;\n"
+"    border: 2px solid rgb(85, 0, 255);\n"
 "}\n"
 "\n"
 "")
@@ -57,14 +50,19 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.lineEdit.setFont(font)
         self.lineEdit.setStyleSheet("QLineEdit {\n"
-"    border-radius: 10px;\n"
-"    border-color: rgb(85, 0, 255);\n"
+"    border:  1px solid #ffffff;\n"
+"    border-radius: 4px;        \n"
 "}")
         self.lineEdit.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.lineEdit.setReadOnly(True)
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(10, 20, 61, 41))
+        self.label.setGeometry(QtCore.QRect(5, 20, 61, 41))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
         self.label.setStyleSheet("")
         self.label.setTextFormat(QtCore.Qt.TextFormat.RichText)
         self.label.setObjectName("label")
@@ -81,97 +79,121 @@ class Ui_MainWindow(object):
         self.RandomPush.setStyleSheet("")
         self.RandomPush.setObjectName("RandomPush")
         self.formGroupBox = QtWidgets.QGroupBox(parent=self.centralwidget)
-        self.formGroupBox.setGeometry(QtCore.QRect(450, 5, 160, 201))
+        self.formGroupBox.setGeometry(QtCore.QRect(450, 0, 161, 261))
         self.formGroupBox.setStyleSheet("QCheckBox {\n"
-"    font-family: \"Segoe Print\"; \n"
+"    font: 400 4pt \"Microsoft YaHei UI\";; \n"
 "    color: white;\n"
 "    font-size: 13px;\n"
-"    border-radius: 10px;\n"
-"    border-color: rgb(85, 0, 255)\n"
-"}\n"
-"    \n"
+"} \n"
+"\n"
 "QCheckBox:hover {    \n"
-"    background-color: #ffffff;\n"
-"\n"
-"    color: black;    \n"
+"    background-color: rgb(36, 35, 35);\n"
+"    color: white;    \n"
+"    border-radius: 4px;\n"
+"    border: 1px solid #ffffff\n"
 "}\n"
 "\n"
+"QCheckBox:pressed {\n"
+"    color: white;\n"
+"    border: 1px solid rgb(255, 255, 255);\n"
+"}\n"
 "\n"
-"\n"
-"QGroupBox{\n"
+"QGroupBox{    \n"
 "    border-radius: 10px; \n"
-"    border-color: rgb(85, 0, 255);\n"
+"    border: 1px solid;\n"
+"    border-color: #ffffff;\n"
 "}\n"
 "\n"
-"QLabel {\n"
-"    border-color: rgb(85, 0, 255);\n"
-"}")
+"")
         self.formGroupBox.setObjectName("formGroupBox")
         self.label_2 = QtWidgets.QLabel(parent=self.formGroupBox)
-        self.label_2.setGeometry(QtCore.QRect(11, 5, 52, 18))
-        self.label_2.setStyleSheet("font-family: \"Segoe Print\"; \n"
-"color: white;")
+        self.label_2.setGeometry(QtCore.QRect(10, 10, 35, 16))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(8)
+        self.label_2.setFont(font)
+        self.label_2.setStyleSheet("")
         self.label_2.setObjectName("label_2")
         self.NumBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.NumBox.setGeometry(QtCore.QRect(11, 29, 81, 17))
+        self.NumBox.setGeometry(QtCore.QRect(10, 35, 80, 23))
         self.NumBox.setStyleSheet("")
         self.NumBox.setObjectName("NumBox")
         self.LetterBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.LetterBox.setGeometry(QtCore.QRect(11, 52, 68, 18))
+        self.LetterBox.setGeometry(QtCore.QRect(10, 64, 65, 23))
         self.LetterBox.setStyleSheet("")
         self.LetterBox.setObjectName("LetterBox")
         self.SpecialBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.SpecialBox.setGeometry(QtCore.QRect(11, 76, 126, 17))
+        self.SpecialBox.setGeometry(QtCore.QRect(10, 93, 122, 23))
         self.SpecialBox.setStyleSheet("")
         self.SpecialBox.setObjectName("SpecialBox")
         self.RandBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.RandBox.setGeometry(QtCore.QRect(11, 99, 122, 18))
+        self.RandBox.setGeometry(QtCore.QRect(10, 122, 117, 23))
         self.RandBox.setStyleSheet("")
         self.RandBox.setObjectName("RandBox")
         self.CapsBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.CapsBox.setGeometry(QtCore.QRect(11, 123, 57, 17))
+        self.CapsBox.setGeometry(QtCore.QRect(10, 151, 57, 23))
         self.CapsBox.setStyleSheet("")
         self.CapsBox.setObjectName("CapsBox")
         self.BaseBox = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.BaseBox.setGeometry(QtCore.QRect(11, 146, 72, 18))
+        self.BaseBox.setGeometry(QtCore.QRect(10, 180, 67, 23))
         self.BaseBox.setStyleSheet("")
         self.BaseBox.setObjectName("BaseBox")
         self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.formGroupBox)
-        self.lineEdit_2.setGeometry(QtCore.QRect(11, 169, 31, 18))
+        self.lineEdit_2.setGeometry(QtCore.QRect(10, 231, 31, 18))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
         self.lineEdit_2.setSizePolicy(sizePolicy)
+        self.lineEdit_2.setStyleSheet("QLineEdit {\n"
+"    border:  1px solid #ffffff;\n"
+"    border-radius: 4px;        \n"
+"}\n"
+"\n"
+"")
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.label_5 = QtWidgets.QLabel(parent=self.formGroupBox)
-        self.label_5.setGeometry(QtCore.QRect(49, 169, 51, 20))
+        self.label_5.setGeometry(QtCore.QRect(10, 207, 51, 20))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(8)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.CopyPush = QtWidgets.QPushButton(parent=self.centralwidget)
         self.CopyPush.setGeometry(QtCore.QRect(370, 70, 61, 23))
         self.CopyPush.setStyleSheet("")
         self.CopyPush.setObjectName("CopyPush")
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(515, 335, 91, 21))
+        self.label_3.setGeometry(QtCore.QRect(475, 335, 141, 21))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(8)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
+        self.label_3.setFont(font)
         self.label_3.setStyleSheet("")
         self.label_3.setText("")
+        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(430, 210, 181, 21))
+        self.label_4.setGeometry(QtCore.QRect(420, 267, 181, 16))
         font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(10)
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(8)
         font.setBold(False)
-        font.setItalic(True)
-        font.setWeight(9)
+        font.setItalic(False)
+        font.setWeight(50)
         self.label_4.setFont(font)
         self.label_4.setStyleSheet("")
-        self.label_4.setText("")
         self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_4.setObjectName("label_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 617, 23))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 623, 21))
         self.menuBar.setObjectName("menuBar")
         self.menuFileSaver = QtWidgets.QMenu(parent=self.menuBar)
         self.menuFileSaver.setObjectName("menuFileSaver")
@@ -247,6 +269,7 @@ class Ui_MainWindow(object):
         self.lineEdit_2.setText(_translate("MainWindow", "8"))
         self.label_5.setText(_translate("MainWindow", "Length"))
         self.CopyPush.setText(_translate("MainWindow", "Copy"))
+        self.label_4.setText(_translate("MainWindow", "Пароль сгенерирован!"))
         self.menuFileSaver.setTitle(_translate("MainWindow", "File"))
         self.menuHashes.setTitle(_translate("MainWindow", "Hashes"))
         self.menuAbout.setTitle(_translate("MainWindow", "About"))

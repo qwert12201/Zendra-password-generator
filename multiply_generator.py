@@ -12,85 +12,298 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(418, 300)
+        Dialog.resize(420, 300)
+        Dialog.setStyleSheet("background-color: rgb(36, 35, 35);\n"
+"color: white;\n"
+"")
         self.label = QtWidgets.QLabel(parent=Dialog)
         self.label.setGeometry(QtCore.QRect(110, 10, 111, 16))
         font = QtGui.QFont()
-        font.setPointSize(10)
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(8)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
         self.label.setFont(font)
+        self.label.setStyleSheet("QLabel {    \n"
+"    font: 400 8pt \"Microsoft YaHei UI\";\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
         self.label.setObjectName("label")
         self.progressBar = QtWidgets.QProgressBar(parent=Dialog)
-        self.progressBar.setGeometry(QtCore.QRect(70, 120, 181, 23))
+        self.progressBar.setGeometry(QtCore.QRect(10, 240, 211, 21))
+        self.progressBar.setStyleSheet("")
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.formGroupBox = QtWidgets.QGroupBox(parent=Dialog)
-        self.formGroupBox.setGeometry(QtCore.QRect(260, 0, 141, 161))
-        self.formGroupBox.setStyleSheet("")
+        self.formGroupBox.setGeometry(QtCore.QRect(260, 5, 142, 221))
+        self.formGroupBox.setStyleSheet("QCheckBox {\n"
+"  font: 400 8pt \"Microsoft YaHei UI\";; \n"
+"  color: white;\n"
+"  font-size: 13px;\n"
+"}\n"
+"\n"
+"QCheckBox:hover {    \n"
+"    background-color: rgb(36, 35, 35);\n"
+"    color: white;    \n"
+"    border-radius: 4px;\n"
+"    border: 1px solid #ffffff\n"
+"}\n"
+"\n"
+"QCheckBox:pressed {\n"
+"    color: white;\n"
+"    border: 1px solid rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QGroupBox{    \n"
+"    border-radius: 10px; \n"
+"    border: 1px solid;\n"
+"    border-color: #ffffff;\n"
+"}\n"
+"\n"
+"QLabel {    \n"
+"    font: 400 8pt \"Microsoft YaHei UI\";\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
         self.formGroupBox.setObjectName("formGroupBox")
         self.label_3 = QtWidgets.QLabel(parent=self.formGroupBox)
-        self.label_3.setGeometry(QtCore.QRect(11, 1, 61, 16))
-        self.label_3.setStyleSheet("")
+        self.label_3.setGeometry(QtCore.QRect(10, 10, 35, 16))
         self.label_3.setObjectName("label_3")
         self.NumBox2 = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.NumBox2.setGeometry(QtCore.QRect(11, 17, 81, 16))
+        self.NumBox2.setGeometry(QtCore.QRect(10, 32, 122, 17))
         self.NumBox2.setStyleSheet("")
         self.NumBox2.setObjectName("NumBox2")
         self.LetterBox2 = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.LetterBox2.setGeometry(QtCore.QRect(11, 36, 71, 17))
+        self.LetterBox2.setGeometry(QtCore.QRect(10, 55, 122, 17))
         self.LetterBox2.setStyleSheet("")
         self.LetterBox2.setObjectName("LetterBox2")
         self.SpecialBox2 = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.SpecialBox2.setGeometry(QtCore.QRect(11, 56, 111, 16))
+        self.SpecialBox2.setGeometry(QtCore.QRect(10, 78, 122, 18))
         self.SpecialBox2.setStyleSheet("")
         self.SpecialBox2.setObjectName("SpecialBox2")
         self.RandBox2 = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.RandBox2.setGeometry(QtCore.QRect(11, 75, 111, 17))
+        self.RandBox2.setGeometry(QtCore.QRect(10, 102, 122, 17))
         self.RandBox2.setStyleSheet("")
         self.RandBox2.setObjectName("RandBox2")
         self.CapsBox2 = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.CapsBox2.setGeometry(QtCore.QRect(11, 95, 81, 16))
+        self.CapsBox2.setGeometry(QtCore.QRect(10, 125, 122, 17))
         self.CapsBox2.setStyleSheet("")
         self.CapsBox2.setObjectName("CapsBox2")
         self.BaseBox2 = QtWidgets.QCheckBox(parent=self.formGroupBox)
-        self.BaseBox2.setGeometry(QtCore.QRect(11, 114, 81, 17))
+        self.BaseBox2.setGeometry(QtCore.QRect(10, 148, 122, 17))
         self.BaseBox2.setStyleSheet("")
         self.BaseBox2.setObjectName("BaseBox2")
         self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.formGroupBox)
-        self.lineEdit_2.setGeometry(QtCore.QRect(11, 135, 31, 17))
+        self.lineEdit_2.setGeometry(QtCore.QRect(10, 193, 31, 17))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
         self.lineEdit_2.setSizePolicy(sizePolicy)
+        self.lineEdit_2.setStyleSheet("QLineEdit {\n"
+"    border:  1px solid #ffffff;\n"
+"    border-radius: 4px;        \n"
+"}\n"
+"\n"
+"")
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.label_4 = QtWidgets.QLabel(parent=self.formGroupBox)
-        self.label_4.setGeometry(QtCore.QRect(49, 135, 41, 16))
+        self.label_4.setGeometry(QtCore.QRect(10, 171, 37, 16))
         self.label_4.setObjectName("label_4")
         self.Nativelabel = QtWidgets.QLabel(parent=Dialog)
-        self.Nativelabel.setGeometry(QtCore.QRect(250, 270, 151, 21))
-        self.Nativelabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.Nativelabel.setGeometry(QtCore.QRect(250, 270, 161, 21))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(8)
+        self.Nativelabel.setFont(font)
+        self.Nativelabel.setStyleSheet("QLabel {    \n"
+"    font: 8pt \"Microsoft YaHei UI\";\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
+        self.Nativelabel.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.Nativelabel.setObjectName("Nativelabel")
+        self.verticalLayoutWidget = QtWidgets.QWidget(parent=Dialog)
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 110, 241, 121))
+        self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.label_5 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("QLabel {\n"
+"    font: 600 8pt \"Microsoft YaHei UI\";\n"
+"    font-size: 9pt;\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
+        self.label_5.setObjectName("label_5")
+        self.verticalLayout.addWidget(self.label_5)
+        self.label_6 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.label_6.setFont(font)
+        self.label_6.setStyleSheet("QLabel {\n"
+"    font: 600 8pt \"Microsoft YaHei UI\";\n"
+"    font-size: 9pt;\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
+        self.label_6.setObjectName("label_6")
+        self.verticalLayout.addWidget(self.label_6)
+        self.label_7 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.label_7.setFont(font)
+        self.label_7.setStyleSheet("QLabel {\n"
+"    font: 600 8pt \"Microsoft YaHei UI\";\n"
+"    font-size: 9pt;\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
+        self.label_7.setObjectName("label_7")
+        self.verticalLayout.addWidget(self.label_7)
+        self.label_8 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.label_8.setFont(font)
+        self.label_8.setStyleSheet("QLabel {\n"
+"    font: 600 8pt \"Microsoft YaHei UI\";\n"
+"    font-size: 9pt;\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
+        self.label_8.setObjectName("label_8")
+        self.verticalLayout.addWidget(self.label_8)
+        self.label_9 = QtWidgets.QLabel(parent=self.verticalLayoutWidget)
+        font = QtGui.QFont()
+        font.setFamily("Microsoft YaHei UI")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.label_9.setFont(font)
+        self.label_9.setStyleSheet("QLabel {\n"
+"    font: 600 8pt \"Microsoft YaHei UI\";\n"
+"    font-size: 9pt;\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
+        self.label_9.setObjectName("label_9")
+        self.verticalLayout.addWidget(self.label_9)
         self.layoutWidget = QtWidgets.QWidget(parent=Dialog)
-        self.layoutWidget.setGeometry(QtCore.QRect(50, 190, 239, 25))
+        self.layoutWidget.setGeometry(QtCore.QRect(20, 30, 231, 20))
         self.layoutWidget.setObjectName("layoutWidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.GenerateMultiply = QtWidgets.QPushButton(parent=self.layoutWidget)
-        self.GenerateMultiply.setObjectName("GenerateMultiply")
-        self.horizontalLayout.addWidget(self.GenerateMultiply)
-        self.SelectFile = QtWidgets.QPushButton(parent=self.layoutWidget)
-        self.SelectFile.setObjectName("SelectFile")
-        self.horizontalLayout.addWidget(self.SelectFile)
-        self.CancelButton = QtWidgets.QPushButton(parent=self.layoutWidget)
-        self.CancelButton.setObjectName("CancelButton")
-        self.horizontalLayout.addWidget(self.CancelButton)
-        self.lineEdit = QtWidgets.QLineEdit(parent=Dialog)
-        self.lineEdit.setGeometry(QtCore.QRect(90, 160, 201, 20))
-        self.lineEdit.setObjectName("lineEdit")
-        self.label_2 = QtWidgets.QLabel(parent=Dialog)
-        self.label_2.setGeometry(QtCore.QRect(40, 160, 51, 20))
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_2 = QtWidgets.QLabel(parent=self.layoutWidget)
+        self.label_2.setStyleSheet("QLabel {    \n"
+"    font: 400 8pt \"Microsoft YaHei UI\";\n"
+"    border-color: rgb(36, 35, 35)\n"
+"}\n"
+"")
         self.label_2.setObjectName("label_2")
+        self.horizontalLayout_2.addWidget(self.label_2)
+        self.lineEdit = QtWidgets.QLineEdit(parent=self.layoutWidget)
+        self.lineEdit.setStyleSheet("QLineEdit {\n"
+"    border:  1px solid #ffffff;\n"
+"    border-radius: 4px;        \n"
+"}")
+        self.lineEdit.setText("")
+        self.lineEdit.setObjectName("lineEdit")
+        self.horizontalLayout_2.addWidget(self.lineEdit)
+        self.GenerateMultiply = QtWidgets.QPushButton(parent=Dialog)
+        self.GenerateMultiply.setGeometry(QtCore.QRect(11, 66, 81, 25))
+        self.GenerateMultiply.setStyleSheet("QPushButton {\n"
+"    font: 400 8pt \"Microsoft YaHei UI\";    \n"
+"    border-radius: 8px;\n"
+"    background-color: #000000;\n"
+"    font-size: 13px;\n"
+"    color: rgb(255,255,255);\n"
+"}  \n"
+"\n"
+"QPushButton:hover {\n"
+"    border: 2px solid #000000;\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    color: black;    \n"
+"}\n"
+"QPushButton:pressed{\n"
+"    background-color: black;\n"
+"    color: white;\n"
+"    border: 2px solid rgb(85, 0, 255);\n"
+"\n"
+"\n"
+"}")
+        self.GenerateMultiply.setObjectName("GenerateMultiply")
+        self.SelectFile = QtWidgets.QPushButton(parent=Dialog)
+        self.SelectFile.setGeometry(QtCore.QRect(95, 66, 81, 25))
+        self.SelectFile.setStyleSheet("QPushButton {\n"
+"    font: 400 8pt \"Microsoft YaHei UI\";    \n"
+"    border-radius: 8px;\n"
+"    background-color: #000000;\n"
+"    font-size: 13px;\n"
+"    color: rgb(255,255,255);\n"
+"}  \n"
+"\n"
+"QPushButton:hover {\n"
+"    border: 2px solid #000000;\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    color: black;    \n"
+"}\n"
+"QPushButton:pressed{\n"
+"    background-color: black;\n"
+"    color: white;\n"
+"    border: 2px solid rgb(85, 0, 255);\n"
+"\n"
+"\n"
+"}")
+        self.SelectFile.setObjectName("SelectFile")
+        self.CancelButton = QtWidgets.QPushButton(parent=Dialog)
+        self.CancelButton.setGeometry(QtCore.QRect(178, 66, 78, 25))
+        self.CancelButton.setStyleSheet("QPushButton {\n"
+"    font: 400 8pt \"Microsoft YaHei UI\";    \n"
+"    border-radius: 8px;\n"
+"    background-color: #000000;\n"
+"    font-size: 13px;\n"
+"    color: rgb(255,255,255);\n"
+"    \n"
+"}  \n"
+"\n"
+"QPushButton:hover {\n"
+"    border: 2px solid #000000;\n"
+"    background-color: rgb(255, 255, 255);\n"
+"    color: black;    \n"
+"}\n"
+"QPushButton:pressed{\n"
+"    background-color: black;\n"
+"    color: white;\n"
+"    border: 2px solid rgb(85, 0, 255);\n"
+"\n"
+"\n"
+"}")
+        self.CancelButton.setObjectName("CancelButton")
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -109,8 +322,12 @@ class Ui_Dialog(object):
         self.lineEdit_2.setText(_translate("Dialog", "8"))
         self.label_4.setText(_translate("Dialog", "Length"))
         self.Nativelabel.setText(_translate("Dialog", "Файл выбран успешно"))
+        self.label_5.setText(_translate("Dialog", "File:"))
+        self.label_6.setText(_translate("Dialog", "File size:"))
+        self.label_7.setText(_translate("Dialog", "Passwords generated:"))
+        self.label_8.setText(_translate("Dialog", "Seconds remaining:"))
+        self.label_9.setText(_translate("Dialog", "Current password:"))
+        self.label_2.setText(_translate("Dialog", "Count:"))
         self.GenerateMultiply.setText(_translate("Dialog", "Generate"))
         self.SelectFile.setText(_translate("Dialog", "Select a file"))
         self.CancelButton.setText(_translate("Dialog", "Cancel"))
-        self.lineEdit.setText(_translate("Dialog", "Type count of generations"))
-        self.label_2.setText(_translate("Dialog", "Amount:"))
