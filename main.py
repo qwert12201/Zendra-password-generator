@@ -61,6 +61,10 @@ class ModuleWindow_1(QtWidgets.QDialog):
         timer.timeout.connect(lambda: self.ui.Nativelabel.setText(""))
         timer.start()
 
+    def closeEvent(self, a0):
+        self._iswork = False
+        return super().closeEvent(a0)
+
     def reset_settings(self):
         self.ui.progressBar.setValue(0)
         self._iswork = False
@@ -162,7 +166,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("Password Generator")
         self.display = "Добро пожаловать!"
         self.ui.lineEdit.setText(self.display)
-        self.boxes = [self.ui.BaseBox, self.ui.CapsBox, self.ui.RandBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
+        self.boxes = [self.ui.BaseBox, self.ui.RandBox, self.ui.CapsBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
         self.version = "1.03"
         self._rippers = ("Вы не выбрали ни одного параметра!", "Добро пожаловать!", "")
         self.ui.label_3.setText("Version: " + self.version)
@@ -208,13 +212,13 @@ class MainWindow(QtWidgets.QMainWindow):
         lists = []
         length = self.ui.lineEdit_2.text()
         result = ""
-        if not any(box.isChecked() for box in self.boxes):  # not - инвертирует -> если все = False
-            self.display = ""
-            self.ui.lineEdit.setText("Вы не выбрали ни одного параметра!")
-            return
+        box_check = [box.isChecked() for box in self.boxes]
         if not length.isdigit():
             QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in generation number")
             self.ui.lineEdit.setText("")
+            return
+        if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
+            QtWidgets.QMessageBox.critical(self, "Options", "Incorrect options")
             return
         length = int(length)
         if self.ui.NumBox.isChecked():
