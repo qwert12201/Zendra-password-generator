@@ -12,5 +12,4 @@ def resource_path(path: str) -> str:
         base_path = sys._MEIPASS
     else:
         base_path = os.path.abspath(".")
-    print(os.path.join(base_path, path))
     return os.path.join(base_path, path)

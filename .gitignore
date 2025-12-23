@@ -4,3 +4,5 @@ build/
 *.spec
 *.ui
 env/
+*.txt
+!requirements.txt

@@ -10,7 +10,7 @@ try:
     from design import Ui_MainWindow
     from multiply_generator import Ui_Dialog
     from functools import partial
-    from hashes import *
+    from modules import *
 except (ImportError, ModuleNotFoundError):
     print("You haven't install all modules from requirements.txt, I can try to do it")
     choice = input("yes / no ").strip().lower()
@@ -89,7 +89,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
     def type_of_bit(self, bits: int | float) -> str:
         bytess = bits / 8
         if bits == 0:
-            return "0 bits"
+            return self.tr("0 bits")
         data = {self.tr("bits"): bits, self.tr("bytes"): bytess, self.tr("KB"): bytess / 1024, self.tr("MB"): bytess / 1048576, self.tr("GB"): bytess / 1048576 / 1024, self.tr("TB"): bytess / 1099511627776}
         for key, value in data.items():
             if value >= 1:
@@ -121,7 +121,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
             QtWidgets.QMessageBox.critical(self, self.tr("Length"), self.tr("Incorrect length"))
             return
         if not value.isdigit() or int(value) < 1:
-            QtWidgets.QMessageBox.critical(self, self.tr("Incorrect value"), self.tr("Please type correct value in the count field"))
+            QtWidgets.QMessageBox.critical(self, self.tr("Value"), self.tr("Please type correct value in the count field"))
             self.ui.lineEdit.setText("")
             return
         if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
@@ -148,12 +148,12 @@ class ModuleWindow_1(QtWidgets.QDialog):
             self.update_native_display(self.tr("Generation has started..."))
             self.ui.lineEdit.setReadOnly(True)
             self.ui.label_5.setText(self.tr("File: ") + self.file.split("/")[-1])
-            remaining = "0"
+            remaining = "N/A"
+            start = time.perf_counter()
             for i in range(value):
-                a = time.perf_counter()
                 size = int(os.lstat(self.file)[6]) * 8
                 self.ui.label_7.setText(self.tr("Passwords generated: ") + str(i))
-                self.ui.label_8.setText(self.tr("Seconds remaining: ") + remaining)
+                self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(remaining))
                 if not self._iswork:
                     self.ui.CancelButton.setText(self.tr("Clear"))
                     return
@@ -164,16 +164,14 @@ class ModuleWindow_1(QtWidgets.QDialog):
                     result += self.one_char(choice)
                 if self.ui.BaseBox2.isChecked():
                     result = base64.b64encode(result.encode("utf-8")).decode()
-                prev = remaining
-                remaining = str(int(time.perf_counter() - a) * (value - i)) if i % 100 == 0 else prev
-                QtWidgets.QApplication.processEvents()
+                remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
                 self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
                 self.ui.label_9.setText(self.tr('Current password: ') + result)
                 f.write(result + "\n")
         self.ui.CancelButton.setText(self.tr("Clear"))
         self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
         self.ui.label_7.setText(self.tr("Passwords generated: ") + str(value))
-        self.ui.label_8.setText(self.tr("Seconds remaining: " + str(0)))
+        self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(0))
         self.ui.CancelButton.setText(self.tr("Clear"))
         self.ui.progressBar.setValue(100)
         self._iswork = False
