@@ -51,7 +51,6 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.ui.Nativelabel.setText("")
         self.file = None
         self.labels = [self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8, self.ui.label_9]
-        self.counter = 0
         self.reset_settings()
 
         self.ui.GenerateMultiply.clicked.connect(self.generateMultiply)
@@ -209,8 +208,8 @@ class MainWindow(QtWidgets.QMainWindow):
         for _hash, _hash2 in zip(self.hashes, algorithms):
             _hash.triggered.connect(partial(self.crypto_handler, _hash2))
         self.ui.actionGenerate_Multiply_Times.triggered.connect(self.multiply_handler)
-        self.ui.actionEnglish.triggered.connect(lambda: self.translate("eng"))
-        self.ui.actionRussian.triggered.connect(lambda: self.translate("rus"))
+        self.ui.actionEnglish.triggered.connect(lambda: self.translate("en"))
+        self.ui.actionRussian.triggered.connect(lambda: self.translate("ru"))
 
     def update_display(self):
         self.ui.lineEdit.setText(self.display)
@@ -221,12 +220,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def translate(self, lang: str):
         app.removeTranslator(self.app_translator)
-        if lang == "eng":
-            self.app_translator.load("translations/en.qm")
-        elif lang == "rus":
-            self.app_translator.load("translations/ru.qm")
-        app.installTranslator(self.app_translator)
-        self.ui.retranslateUi(self)
+        path = resource_path("translations/" + lang + ".qm")
+        if self.app_translator.load(path):
+            app.installTranslator(self.app_translator)
+            self.ui.retranslateUi(self)
 
     def info_label(self, text: str):
         timer = QtCore.QTimer(self)

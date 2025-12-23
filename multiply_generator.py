@@ -8,6 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+# flake8: noqa
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
