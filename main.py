@@ -10,6 +10,7 @@ try:
     from design import Ui_MainWindow
     from multiply_generator import Ui_Dialog
     from functools import partial
+    from hashes import *
 except (ImportError, ModuleNotFoundError):
     print("You haven't install all modules from requirements.txt, I can try to do it")
     choice = input("yes / no ").strip().lower()
@@ -22,8 +23,12 @@ except (ImportError, ModuleNotFoundError):
     else:
         raise ImportError("Modules haven't installed")
 
-
-from hashes import *
+# ---------------------------
+# Debug
+# os.system("pyuic6 design.ui -o design.py")
+# os.system("pyuic6 module_multiply_generator.ui -o multiply_generator.py")
+# os.system("lupdate main.py multiply_generator.py design.ui module_multiply_generator.ui -ts translations/ru.ts translations/en.ts")
+# os.system("lrelease translations/*.ts")
 
 # Constants
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -46,8 +51,8 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.ui.Nativelabel.setText("")
         self.file = None
         self.labels = [self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8, self.ui.label_9]
-        self.reset_settings()
         self.counter = 0
+        self.reset_settings()
 
         self.ui.GenerateMultiply.clicked.connect(self.generateMultiply)
         self.ui.SelectFile.clicked.connect(self.selectFile)
@@ -61,6 +66,10 @@ class ModuleWindow_1(QtWidgets.QDialog):
         timer.timeout.connect(lambda: self.ui.Nativelabel.setText(""))
         timer.start()
 
+    def closeEvent(self, a0):
+        self._iswork = False
+        return super().closeEvent(a0)
+
     def reset_settings(self):
         self.ui.progressBar.setValue(0)
         self._iswork = False
@@ -69,23 +78,38 @@ class ModuleWindow_1(QtWidgets.QDialog):
             label.hide()
 
     def CancelGeneration(self):
-        if self._iswork:
-            choice = QtWidgets.QMessageBox.warning(self, "Warning", "Do you want to stop generation?", QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        if self._iswork and self.ui.lineEdit.isReadOnly():
+            choice = QtWidgets.QMessageBox.warning(self, self.tr("Warning"), self.tr("Do you want to stop generation?"), QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             if choice == QtWidgets.QMessageBox.StandardButton.Yes:
-                self.update_native_display("Отменено.")
-        self.reset_settings()
+                self.update_native_display(self.tr("Interrupted."))
+                self._iswork = False
+        elif self.ui.CancelButton.text() == self.tr("Clear"):
+            self.reset_settings()
+            self.ui.CancelButton.setText(self.tr("Cancel"))
+
+    def type_of_bit(self, bits: int | float) -> str:
+        bytess = bits / 8
+        if bits == 0:
+            return "0 bits"
+        data = {self.tr("bits"): bits, self.tr("bytes"): bytess, self.tr("KB"): bytess / 1024, self.tr("MB"): bytess / 1048576, self.tr("GB"): bytess / 1048576 / 1024, self.tr("TB"): bytess / 1099511627776}
+        for key, value in data.items():
+            if value >= 1:
+                result = str(round(value, 2)) + " " + key
+        return result
 
     @staticmethod
     def one_char(array: list[str | int]) -> str:
         return str(random.choice(array))
 
     def selectFile(self):
-        file, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Select a file", filter="*.txt")
+        file, _ = QtWidgets.QFileDialog.getSaveFileName(self, self.tr("Select a file"), filter="*.txt")
         if file:
             with open(file, "+a", encoding="utf-8"):
                 pass
             self.file = file
-        self.update_native_display("Файл выбран успешно!")
+            self.update_native_display(self.tr("File has selected succesfully!"))
+        else:
+            self.update_native_display(self.tr("File selection was interrupted"))
 
     def generateMultiply(self):
         self.reset_settings()
@@ -94,18 +118,18 @@ class ModuleWindow_1(QtWidgets.QDialog):
         length = self.ui.lineEdit_2.text()
         value = self.ui.lineEdit.text()
         box_check = [box.isChecked() for box in self.boxes]
-        if not length.isdigit():
-            QtWidgets.QMessageBox.critical(self, "Length", "Incorrect length")
+        if not length.isdigit() or int(length) < 1:
+            QtWidgets.QMessageBox.critical(self, self.tr("Length"), self.tr("Incorrect length"))
             return
-        if not value.isdigit():
-            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in the generation field")
+        if not value.isdigit() or int(value) < 1:
+            QtWidgets.QMessageBox.critical(self, self.tr("Incorrect value"), self.tr("Please type correct value in the count field"))
             self.ui.lineEdit.setText("")
             return
         if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
-            QtWidgets.QMessageBox.critical(self, "Options", "Incorrect options")
+            QtWidgets.QMessageBox.critical(self, self.tr("Options"), self.tr("You haven't selected any option"))
             return
         if not self.file:
-            QtWidgets.QMessageBox.critical(self, "File", "You have to select a file to save passwords")
+            QtWidgets.QMessageBox.critical(self, self.tr("File"), self.tr("You have to select a file to save passwords"))
             return
         if self.ui.NumBox2.isChecked():
             lists.append(numbers)
@@ -122,20 +146,19 @@ class ModuleWindow_1(QtWidgets.QDialog):
         for label in self.labels:
             label.show()
         with open(self.file, "a", encoding="utf-8") as f:
-            self.update_native_display("Генерация начата.")
+            self.update_native_display(self.tr("Generation has started..."))
             self.ui.lineEdit.setReadOnly(True)
-            self.ui.label_5.setText("File: " + self.file.split("/")[-1])
+            self.ui.label_5.setText(self.tr("File: ") + self.file.split("/")[-1])
             remaining = "0"
             for i in range(value):
                 a = time.perf_counter()
                 size = int(os.lstat(self.file)[6]) * 8
-                self.ui.label_6.setText("File size: " + type_of_bit(size)) if size else self.ui.label_6.setText("File size: 0 БИТ")
-                self.ui.label_7.setText("Passwords generated: " + str(i))
-                self.ui.label_8.setText("Seconds remaining: " + remaining)
+                self.ui.label_7.setText(self.tr("Passwords generated: ") + str(i))
+                self.ui.label_8.setText(self.tr("Seconds remaining: ") + remaining)
                 if not self._iswork:
+                    self.ui.CancelButton.setText(self.tr("Clear"))
                     return
                 result = ""
-                self.ui.label_9.setText("Current password: " + result)
                 self.ui.progressBar.setValue(int((i / value) * 100))
                 for _ in range(length):
                     choice = random.choice(lists)
@@ -143,15 +166,20 @@ class ModuleWindow_1(QtWidgets.QDialog):
                 if self.ui.BaseBox2.isChecked():
                     result = base64.b64encode(result.encode("utf-8")).decode()
                 prev = remaining
-                remaining = str(int((time.perf_counter() - a) * (value - i))) if i % 2000 == 0 else prev
-                self.ui.label_9.setText("Current password: " + str(result))
+                remaining = str(int(time.perf_counter() - a) * (value - i)) if i % 100 == 0 else prev
                 QtWidgets.QApplication.processEvents()
+                self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
+                self.ui.label_9.setText(self.tr('Current password: ') + result)
                 f.write(result + "\n")
-        self.ui.label_7.setText(f"Passwords generated: {value}")
+        self.ui.CancelButton.setText(self.tr("Clear"))
+        self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
+        self.ui.label_7.setText(self.tr("Passwords generated: ") + str(value))
+        self.ui.label_8.setText(self.tr("Seconds remaining: " + str(0)))
+        self.ui.CancelButton.setText(self.tr("Clear"))
         self.ui.progressBar.setValue(100)
         self._iswork = False
         self.ui.lineEdit.setReadOnly(False)
-        self.update_native_display("Пароли сгенерированы!")
+        self.update_native_display(self.tr("Finished!"))
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -160,14 +188,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.setFixedSize(self.size())
         self.setWindowTitle("Password Generator")
-        self.display = "Добро пожаловать!"
+        self.display = self.tr("Welcome!")
         self.ui.lineEdit.setText(self.display)
-        self.boxes = [self.ui.BaseBox, self.ui.CapsBox, self.ui.RandBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
-        self.version = "1.03"
-        self._rippers = ("Вы не выбрали ни одного параметра!", "Добро пожаловать!", "")
-        self.ui.label_3.setText("Version: " + self.version)
+        self.boxes = [self.ui.BaseBox, self.ui.RandBox, self.ui.CapsBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
+        self.version = "1.05"
+        self._rippers = (self.tr("You haven't selected any option!"), self.tr("Welcome!"), "")
+        self.ui.label_3.setText(self.tr("Version: ") + self.version)
         self.hashes = [self.ui.actionsha512, self.ui.actionMD5, self.ui.actionsha256, self.ui.actionsha_1]
         self.ui.label_4.setText("")
+        self.show()
+        self.app_translator = QtCore.QTranslator(app)
 
         # PushButtons
         self.ui.GeneratePush.clicked.connect(self.generator)
@@ -179,6 +209,8 @@ class MainWindow(QtWidgets.QMainWindow):
         for _hash, _hash2 in zip(self.hashes, algorithms):
             _hash.triggered.connect(partial(self.crypto_handler, _hash2))
         self.ui.actionGenerate_Multiply_Times.triggered.connect(self.multiply_handler)
+        self.ui.actionEnglish.triggered.connect(lambda: self.translate("eng"))
+        self.ui.actionRussian.triggered.connect(lambda: self.translate("rus"))
 
     def update_display(self):
         self.ui.lineEdit.setText(self.display)
@@ -186,6 +218,15 @@ class MainWindow(QtWidgets.QMainWindow):
     def multiply_handler(self):
         dialog = ModuleWindow_1()
         dialog.exec()
+
+    def translate(self, lang: str):
+        app.removeTranslator(self.app_translator)
+        if lang == "eng":
+            self.app_translator.load("translations/en.qm")
+        elif lang == "rus":
+            self.app_translator.load("translations/ru.qm")
+        app.installTranslator(self.app_translator)
+        self.ui.retranslateUi(self)
 
     def info_label(self, text: str):
         timer = QtCore.QTimer(self)
@@ -198,7 +239,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def copy_password(self):
         if self.display not in self._rippers:
             password_copy(self.display)
-            self.info_label("Скопировано!")
+            self.info_label(self.tr("Copied!"))
 
     @staticmethod
     def one_char(array: list[str | int]) -> str:
@@ -208,13 +249,13 @@ class MainWindow(QtWidgets.QMainWindow):
         lists = []
         length = self.ui.lineEdit_2.text()
         result = ""
-        if not any(box.isChecked() for box in self.boxes):  # not - инвертирует -> если все = False
-            self.display = ""
-            self.ui.lineEdit.setText("Вы не выбрали ни одного параметра!")
-            return
-        if not length.isdigit():
-            QtWidgets.QMessageBox.critical(self, "Incorrect value", "Please type correct value in generation number")
+        box_check = [box.isChecked() for box in self.boxes]
+        if not length.isdigit() or int(length) < 1:
+            QtWidgets.QMessageBox.critical(self, self.tr("Length"), self.tr("Incorrect length"))
             self.ui.lineEdit.setText("")
+            return
+        if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
+            QtWidgets.QMessageBox.critical(self, self.tr("Options"), self.tr("You haven't selected any option!"))
             return
         length = int(length)
         if self.ui.NumBox.isChecked():
@@ -234,7 +275,7 @@ class MainWindow(QtWidgets.QMainWindow):
             result = base64.b64encode(result.encode("utf-8")).decode()
         self.display = result
         self.update_display()
-        self.info_label("Пароль сгенерирован!")
+        self.info_label(self.tr("Password has generated!"))
 
     def crypto_handler(self, algorithm):
         if self.display not in self._rippers:
@@ -247,15 +288,18 @@ class MainWindow(QtWidgets.QMainWindow):
             random.shuffle(result)
             self.display = "".join(result)
             self.update_display()
+            self.info_label(self.tr("Randomized!"))
 
     def clear(self):
         self.display = ""
         self.update_display()
-        self.info_label("Очищено!")
+        self.info_label(self.tr("Cleaned!"))
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
+    translator = QtCore.QTranslator(app)
+    translator.load("translations/en.qm")
+    app.installTranslator(translator)
     w = MainWindow()
-    w.show()
     sys.exit(app.exec())
