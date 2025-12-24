@@ -166,50 +166,50 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../main.py" line="192"/>
-        <location filename="../main.py" line="196"/>
+        <location filename="../main.py" line="189"/>
+        <location filename="../main.py" line="193"/>
         <source>Welcome!</source>
         <translation>Добро пожаловать!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="196"/>
-        <location filename="../main.py" line="259"/>
+        <location filename="../main.py" line="193"/>
+        <location filename="../main.py" line="254"/>
         <source>You haven&apos;t selected any option!</source>
         <translation>Вы не выбрали ни одну опцию!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="197"/>
+        <location filename="../main.py" line="194"/>
         <source>Version: </source>
         <translation>Версия: </translation>
     </message>
     <message>
-        <location filename="../main.py" line="243"/>
+        <location filename="../main.py" line="238"/>
         <source>Copied!</source>
         <translation>Скопировано!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="255"/>
+        <location filename="../main.py" line="250"/>
         <location filename="../design.ui" line="386"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../main.py" line="255"/>
+        <location filename="../main.py" line="250"/>
         <source>Incorrect length</source>
         <translation>Неправильная длина</translation>
     </message>
     <message>
-        <location filename="../main.py" line="259"/>
+        <location filename="../main.py" line="254"/>
         <source>Options</source>
         <translation>Конфиг</translation>
     </message>
     <message>
-        <location filename="../main.py" line="279"/>
+        <location filename="../main.py" line="274"/>
         <source>Password has generated!</source>
         <translation>Пароль сгенерирован!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="297"/>
+        <location filename="../main.py" line="292"/>
         <source>Cleaned!</source>
         <translation>Очищено!</translation>
     </message>
@@ -219,7 +219,7 @@
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../main.py" line="292"/>
+        <location filename="../main.py" line="287"/>
         <source>Randomized!</source>
         <translation>Рандомизировано!</translation>
     </message>
@@ -342,153 +342,162 @@
 <context>
     <name>ModuleWindow_1</name>
     <message>
-        <location filename="../main.py" line="83"/>
+        <location filename="../main.py" line="81"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../main.py" line="83"/>
+        <location filename="../main.py" line="81"/>
         <source>Do you want to stop generation?</source>
         <translation>Вы действительно хотите остановить генерацию?</translation>
     </message>
     <message>
-        <location filename="../main.py" line="85"/>
+        <location filename="../main.py" line="83"/>
         <source>Interrupted.</source>
         <translation>Прервано.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="87"/>
-        <location filename="../main.py" line="160"/>
-        <location filename="../main.py" line="175"/>
-        <location filename="../main.py" line="179"/>
+        <location filename="../main.py" line="85"/>
+        <location filename="../main.py" line="158"/>
+        <location filename="../main.py" line="172"/>
+        <location filename="../main.py" line="176"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../main.py" line="89"/>
+        <location filename="../main.py" line="87"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="92"/>
+        <source>0 bits</source>
+        <translation>0 бит</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="93"/>
         <source>bits</source>
         <translation>бит</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="93"/>
         <source>bytes</source>
         <translation>байт</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="93"/>
         <source>KB</source>
         <translation>КБ</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="93"/>
         <source>MB</source>
         <translation>МБ</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="93"/>
         <source>GB</source>
         <translation>ГБ</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="93"/>
         <source>TB</source>
         <translation>ТБ</translation>
     </message>
     <message>
-        <location filename="../main.py" line="106"/>
+        <location filename="../main.py" line="104"/>
         <source>Select a file</source>
         <translation>Выбор файла</translation>
     </message>
     <message>
-        <location filename="../main.py" line="111"/>
+        <location filename="../main.py" line="109"/>
         <source>File has selected succesfully!</source>
         <translation>Файл был выбран успешно!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="113"/>
+        <location filename="../main.py" line="111"/>
         <source>File selection was interrupted</source>
         <translation>Выбор файла был прерван</translation>
     </message>
     <message>
-        <location filename="../main.py" line="123"/>
+        <location filename="../main.py" line="121"/>
         <source>Length</source>
         <translation>Длина</translation>
     </message>
     <message>
-        <location filename="../main.py" line="123"/>
+        <location filename="../main.py" line="121"/>
         <source>Incorrect length</source>
         <translation>Неправильная длина</translation>
     </message>
     <message>
-        <location filename="../main.py" line="126"/>
         <source>Incorrect value</source>
-        <translation>Неправильное значение</translation>
+        <translation type="vanished">Неправильное значение</translation>
     </message>
     <message>
-        <location filename="../main.py" line="126"/>
+        <location filename="../main.py" line="124"/>
         <source>Please type correct value in the count field</source>
         <translation>Пожалуйста, введите корректное значение количества паролей</translation>
     </message>
     <message>
-        <location filename="../main.py" line="130"/>
+        <location filename="../main.py" line="124"/>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="128"/>
         <source>Options</source>
         <translation>Конфиг</translation>
     </message>
     <message>
-        <location filename="../main.py" line="130"/>
+        <location filename="../main.py" line="128"/>
         <source>You haven&apos;t selected any option</source>
         <translation>Вы не выбрали ни одной опции</translation>
     </message>
     <message>
-        <location filename="../main.py" line="133"/>
+        <location filename="../main.py" line="131"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../main.py" line="133"/>
+        <location filename="../main.py" line="131"/>
         <source>You have to select a file to save passwords</source>
         <translation>Вы не выбрали ни одну опцию</translation>
     </message>
     <message>
-        <location filename="../main.py" line="150"/>
+        <location filename="../main.py" line="148"/>
         <source>Generation has started...</source>
         <translation>Генерация началась...</translation>
     </message>
     <message>
-        <location filename="../main.py" line="152"/>
+        <location filename="../main.py" line="150"/>
         <source>File: </source>
         <translation>Файл: </translation>
     </message>
     <message>
-        <location filename="../main.py" line="157"/>
-        <location filename="../main.py" line="177"/>
+        <location filename="../main.py" line="155"/>
+        <location filename="../main.py" line="174"/>
         <source>Passwords generated: </source>
         <translation>Паролей сгенерировано: </translation>
     </message>
     <message>
-        <location filename="../main.py" line="158"/>
-        <location filename="../main.py" line="178"/>
+        <location filename="../main.py" line="156"/>
+        <location filename="../main.py" line="175"/>
         <source>Seconds remaining: </source>
         <translation>Секунд осталось: </translation>
     </message>
     <message>
-        <location filename="../main.py" line="172"/>
-        <location filename="../main.py" line="176"/>
+        <location filename="../main.py" line="168"/>
+        <location filename="../main.py" line="173"/>
         <source>File size: </source>
         <translation>Размер файла: </translation>
     </message>
     <message>
-        <location filename="../main.py" line="173"/>
+        <location filename="../main.py" line="169"/>
         <source>Current password: </source>
         <translation>Текущий пароль: </translation>
     </message>
     <message>
-        <location filename="../main.py" line="183"/>
+        <location filename="../main.py" line="180"/>
         <source>Finished!</source>
         <translation>Выполнено!</translation>
     </message>
