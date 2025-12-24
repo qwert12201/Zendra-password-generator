@@ -110,10 +110,38 @@ class ModuleWindow_1(QtWidgets.QDialog):
         else:
             self.update_native_display(self.tr("File selection was interrupted"))
 
+    def final_reset(self):
+        self.ui.CancelButton.setText(self.tr("Clear"))
+        self.ui.CancelButton.setText(self.tr("Clear"))
+        self.ui.progressBar.setValue(100)
+        self._iswork = False
+        self.ui.lineEdit.setReadOnly(False)
+        self.update_native_display(self.tr("Finished!"))
+
+    def generate_password(self):
+        lists = []
+        length = int(self.ui.lineEdit_2.text())
+        result = ""
+        if self.ui.NumBox2.isChecked():
+            lists.append(numbers)
+        if self.ui.LetterBox2.isChecked():
+            lists.append(letters)
+        if self.ui.SpecialBox2.isChecked():
+            lists.append(special_symbols)
+        if self.ui.RandBox2.isChecked():
+            length = random.randint(5, 20)
+        if self.ui.CapsBox2.isChecked():
+            lists.append(big_letters)
+        for _ in range(length):
+            choice = random.choice(lists)
+            result += self.one_char(choice)
+        if self.ui.BaseBox2.isChecked():
+            result = base64.b64encode(result.encode("utf-8")).decode()
+        return result
+
     def generateMultiply(self):
         self.reset_settings()
         self._iswork = True
-        lists = []
         length = self.ui.lineEdit_2.text()
         value = self.ui.lineEdit.text()
         box_check = [box.isChecked() for box in self.boxes]
@@ -130,18 +158,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
         if not self.file:
             QtWidgets.QMessageBox.critical(self, self.tr("File"), self.tr("You have to select a file to save passwords"))
             return
-        if self.ui.NumBox2.isChecked():
-            lists.append(numbers)
-        if self.ui.LetterBox2.isChecked():
-            lists.append(letters)
-        if self.ui.SpecialBox2.isChecked():
-            lists.append(special_symbols)
-        if self.ui.RandBox2.isChecked():
-            length = random.randint(5, 20)
-        if self.ui.CapsBox2.isChecked():
-            lists.append(big_letters)
         value = int(value)
-        length = int(length)
         for label in self.labels:
             label.show()
         with open(self.file, "a", encoding="utf-8") as f:
@@ -157,27 +174,17 @@ class ModuleWindow_1(QtWidgets.QDialog):
                 if not self._iswork:
                     self.ui.CancelButton.setText(self.tr("Clear"))
                     return
-                result = ""
                 self.ui.progressBar.setValue(int((i / value) * 100))
-                for _ in range(length):
-                    choice = random.choice(lists)
-                    result += self.one_char(choice)
-                if self.ui.BaseBox2.isChecked():
-                    result = base64.b64encode(result.encode("utf-8")).decode()
+                result = self.generate_password()
                 remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
                 self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
                 self.ui.label_9.setText(self.tr('Current password: ') + result)
                 f.write(result + "\n")
                 app.processEvents()
-        self.ui.CancelButton.setText(self.tr("Clear"))
+        self.final_reset()
         self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
         self.ui.label_7.setText(self.tr("Passwords generated: ") + str(value))
         self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(0))
-        self.ui.CancelButton.setText(self.tr("Clear"))
-        self.ui.progressBar.setValue(100)
-        self._iswork = False
-        self.ui.lineEdit.setReadOnly(False)
-        self.update_native_display(self.tr("Finished!"))
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
