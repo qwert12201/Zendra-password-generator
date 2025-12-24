@@ -118,9 +118,8 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.ui.lineEdit.setReadOnly(False)
         self.update_native_display(self.tr("Finished!"))
 
-    def generate_password(self):
+    def generate_password(self, length: int) -> str:
         lists = []
-        length = int(self.ui.lineEdit_2.text())
         result = ""
         if self.ui.NumBox2.isChecked():
             lists.append(numbers)
@@ -139,9 +138,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
             result = base64.b64encode(result.encode("utf-8")).decode()
         return result
 
-    def generateMultiply(self):
-        self.reset_settings()
-        self._iswork = True
+    def check_options(self):
         length = self.ui.lineEdit_2.text()
         value = self.ui.lineEdit.text()
         box_check = [box.isChecked() for box in self.boxes]
@@ -158,6 +155,16 @@ class ModuleWindow_1(QtWidgets.QDialog):
         if not self.file:
             QtWidgets.QMessageBox.critical(self, self.tr("File"), self.tr("You have to select a file to save passwords"))
             return
+        return True
+
+    def generateMultiply(self):
+        self.reset_settings()
+        self._iswork = True
+        length = self.ui.lineEdit_2.text()
+        value = self.ui.lineEdit.text()
+        if not self.check_options():
+            return
+        length = int(length)
         value = int(value)
         for label in self.labels:
             label.show()
@@ -175,14 +182,14 @@ class ModuleWindow_1(QtWidgets.QDialog):
                     self.ui.CancelButton.setText(self.tr("Clear"))
                     return
                 self.ui.progressBar.setValue(int((i / value) * 100))
-                result = self.generate_password()
+                result = self.generate_password(length)
                 remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
                 self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
                 self.ui.label_9.setText(self.tr('Current password: ') + result)
                 f.write(result + "\n")
                 app.processEvents()
         self.final_reset()
-        self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
+        self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(int(os.lstat(self.file)[6]) * 8))
         self.ui.label_7.setText(self.tr("Passwords generated: ") + str(value))
         self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(0))
 
