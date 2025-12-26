@@ -2,6 +2,8 @@ import base64
 import random
 import sys
 import os
+import threading
+import queue
 import time
 
 try:
@@ -39,6 +41,8 @@ special_symbols = [
     "№", "€", "£", "₽"
 ]
 numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+BUFFER_LINES = 1000
+WORKERS = 4
 
 class ModuleWindow_1(QtWidgets.QDialog):
     def __init__(self):
@@ -50,7 +54,15 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.boxes = [self.ui.BaseBox2, self.ui.RandBox2, self.ui.CapsBox2, self.ui.LetterBox2, self.ui.NumBox2, self.ui.SpecialBox2]
         self.ui.Nativelabel.setText("")
         self.file = None
-        self.labels = [self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8, self.ui.label_9]
+        self.FILE_LOCK = threading.Lock()
+        self.queue = queue.Queue()
+        self.labels = {
+            "label_5": self.ui.label_5,
+            "label_6": self.ui.label_6,
+            "label_7": self.ui.label_7,
+            "label_8": self.ui.label_8,
+            "label_9": self.ui.label_9
+        }
         self.reset_settings()
 
         self.ui.GenerateMultiply.clicked.connect(self.generateMultiply)
@@ -73,7 +85,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.ui.progressBar.setValue(0)
         self._iswork = False
         self.ui.lineEdit.setReadOnly(False)
-        for label in self.labels:
+        for label in self.labels.values():
             label.hide()
 
     def CancelGeneration(self):
@@ -109,14 +121,6 @@ class ModuleWindow_1(QtWidgets.QDialog):
             self.update_native_display(self.tr("File has selected succesfully!"))
         else:
             self.update_native_display(self.tr("File selection was interrupted"))
-
-    def final_reset(self):
-        self.ui.CancelButton.setText(self.tr("Clear"))
-        self.ui.CancelButton.setText(self.tr("Clear"))
-        self.ui.progressBar.setValue(100)
-        self._iswork = False
-        self.ui.lineEdit.setReadOnly(False)
-        self.update_native_display(self.tr("Finished!"))
 
     def generate_password(self, length: int) -> str:
         lists = []
@@ -157,6 +161,27 @@ class ModuleWindow_1(QtWidgets.QDialog):
             return
         return True
 
+    def worker(self, length: int, value: int):  # lines > 100_000
+        buffer = []  # lines
+        to_generate = value // WORKERS
+        generated = 0
+        for i in range(to_generate):
+            pwd = self.generate_password(length) + "\n"
+            generated += 1
+            buffer.append(pwd)
+            if (len(buffer) >= BUFFER_LINES or (i + 1 == to_generate)) and buffer:
+                with self.FILE_LOCK:
+                    with open(self.file, "a", encoding="utf-8") as f:
+                        f.writelines(buffer)
+                    size = int(os.lstat(self.file)[6]) * 8
+                    result = [
+                        ("label_6", self.tr("File size: ") + str(self.type_of_bit(size))),
+                        ("label_7", generated),
+                        ("label_9", self.tr("Current password: ") + pwd)
+                    ]
+                    self.queue.put(result)
+                    buffer.clear()
+
     def generateMultiply(self):
         self.reset_settings()
         self._iswork = True
@@ -166,29 +191,40 @@ class ModuleWindow_1(QtWidgets.QDialog):
             return
         length = int(length)
         value = int(value)
-        for label in self.labels:
+        total_generated = 0
+        threads = []
+        for label in self.labels.values():
             label.show()
-        with open(self.file, "a", encoding="utf-8") as f:
-            self.update_native_display(self.tr("Generation has started..."))
-            self.ui.lineEdit.setReadOnly(True)
-            self.ui.label_5.setText(self.tr("File: ") + self.file.split("/")[-1])
-            remaining = "N/A"
-            start = time.perf_counter()
-            for i in range(value):
-                size = int(os.lstat(self.file)[6]) * 8
-                self.ui.label_7.setText(self.tr("Passwords generated: ") + str(i))
-                self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(remaining))
-                if not self._iswork:
-                    self.ui.CancelButton.setText(self.tr("Clear"))
-                    return
-                self.ui.progressBar.setValue(int((i / value) * 100))
-                result = self.generate_password(length)
-                remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
-                self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
-                self.ui.label_9.setText(self.tr('Current password: ') + result)
-                f.write(result + "\n")
-                app.processEvents()
-        self.final_reset()
+        self.ui.label_5.setText(self.tr("File: ") + self.file.split("/")[-1])
+        for _ in range(WORKERS):
+            t = threading.Thread(target=self.worker, args=(length, value))
+            threads.append(t)
+            t.start()
+        start = time.perf_counter()
+        while any(thread.is_alive() for thread in threads) or not self.queue.empty():
+            try:
+                result = self.queue.get(timeout=0.2)
+                for data in result:
+                    widget = self.labels.get(data[0])
+                    if widget == self.ui.label_7:
+                        self.ui.label_7.setText("Passwords generated: " + str(total_generated))
+                        total_generated += data[1]
+                    elif widget == self.ui.label_8:
+                        remaining = int(((time.perf_counter() - start) / (total_generated)) * (value - total_generated)) if total_generated >= 500 else 0
+                        self.ui.label_8.setText("Seconds remaining: " + str(remaining))
+                    else:
+                        widget.setText(data[1])
+                self.ui.progressBar.setValue(int(total_generated / value) * 100)
+            except queue.Empty:
+                pass
+            app.processEvents()
+        for t in threads:
+            t.join()
+        self.ui.CancelButton.setText(self.tr("Clear"))
+        self.ui.progressBar.setValue(100)
+        self._iswork = False
+        self.ui.lineEdit.setReadOnly(False)
+        self.update_native_display(self.tr("Finished!"))
         self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(int(os.lstat(self.file)[6]) * 8))
         self.ui.label_7.setText(self.tr("Passwords generated: ") + str(value))
         self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(0))
