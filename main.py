@@ -92,8 +92,8 @@ class ModuleWindow_1(QtWidgets.QDialog):
                 self._iswork = False
         elif self.ui.CancelButton.text() == self.tr("Clear"):
             self.reset_settings()
-            self.ui.CancelButton.setText(self.tr("Cancel"))
             self.update_native_display(self.tr("Cleaned!"))
+            self.ui.CancelButton.setText("Cancel")
 
     def type_of_bit(self, bits: int | float) -> str:
         bytess = bits / 8
@@ -167,6 +167,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
             return
         length = int(length)
         value = int(value)
+        self.ui.CancelButton.setText("Cancel")
         for label in self.labels:
             label.show()
         with open(self.file, "a", encoding="utf-8") as f:
@@ -187,7 +188,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
                 remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
                 self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
                 self.ui.label_9.setText(self.tr('Current password: ') + result)
-                f.write(result + "\n")
+                f.write(result + "\n") if i + 1 != value else f.write(result)
                 app.processEvents()
         self.ui.CancelButton.setText(self.tr("Clear"))
         self.ui.progressBar.setValue(100)
