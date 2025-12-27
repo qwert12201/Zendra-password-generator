@@ -4,6 +4,8 @@ import sys
 import os
 import time
 import shutil
+import threading
+import queue
 
 try:
     from pyperclip import copy as password_copy
@@ -31,9 +33,15 @@ def future():
     # os.system("pyuic6 module_multiply_generator.ui -o multiply_generator.py")
     # os.system("lupdate main.py multiply_generator.py design.ui module_multiply_generator.ui -ts translations/ru.ts translations/en.ts")
     # os.system("lrelease translations/*.ts")
+    for file in os.listdir("test"):
+        if os.lstat(f"test/{file}")[6] != 0:
+            try:
+                os.replace(f"test/{file}", f"past/{file}")
+            except FileExistsError:
+                os.replace(f"test/{file}", f"past/{str(random.choice([0, 10000]))}{file}")
     shutil.rmtree("test")
     os.mkdir("test")
-    for i in range(10):
+    for i in range(6):
         with open(f"test/file_{i}.txt", "w", encoding="utf-8"): pass
     print("Папки созданы и интерфейсы обновлены!")
 
@@ -48,6 +56,81 @@ special_symbols = [
 ]
 numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
+WORKERS = 1
+BUFFER_LINES = 100_000
+threads_queue = queue.Queue()
+
+class Worker(QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    def __init__(self, file: str, length: int, to_generate: int, boxes: dict[str, bool]):
+        super().__init__()
+        self.file = file
+        self.length = length
+        self.to_generate = to_generate
+        self.file_lock = threading.Lock()
+        self._iswork = True
+        for param, value in boxes.items():
+            if value:
+                setattr(self, param, value)
+
+    @staticmethod
+    def one_char(array: list[str | int]) -> str:
+        return str(random.choice(array))
+
+    def generatePassword(self) -> str:
+        lists = []
+        result = ""
+        length = self.length
+        if getattr(self, "nums", False):
+            lists.append(numbers)
+        if getattr(self, "letters", False):
+            lists.append(letters)
+        if getattr(self, "specialSymbols", False):
+            lists.append(special_symbols)
+        if getattr(self, "randLength", False):
+            length = random.randint(5, 20)
+        if getattr(self, "caps", False):
+            lists.append(big_letters)
+        for _ in range(length):
+            choice = random.choice(lists)
+            result += self.one_char(choice)
+        if getattr(self, "base64", False):
+            result = base64.b64encode(result.encode("utf-8")).decode()
+        return result
+
+    def writeLines(self, buffer: list[str]):
+        with self.file_lock:
+            with open(self.file, "a", encoding="utf-8") as f:
+                f.writelines(buffer)
+
+    def sendLogs(self, passwords_generated: int, result: str):
+        # label_7, label_9
+        threads_queue.put((passwords_generated, result))
+
+    @QtCore.pyqtSlot()
+    def run(self):
+        buffer = []
+        generated = 0
+        for _ in range(self.to_generate):
+            if not self._iswork:
+                return False
+            result = self.generatePassword()
+            generated += 1
+            buffer.append(result + "\n")
+            if len(buffer) >= BUFFER_LINES:
+                self.writeLines(buffer)
+                buffer.clear()
+            if generated % 500 == 0:
+                self.sendLogs(generated, result)
+                generated = 0
+        if buffer:
+            self.writeLines(buffer)
+        self.sendLogs(generated, result)
+        buffer.clear()
+        self._iswork = False
+        self.finished.emit()
+
 class ModuleWindow_1(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
@@ -56,12 +139,14 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.setFixedSize(self.size())
         self.setWindowTitle("Multiply Generator")
         self.boxes = [self.ui.BaseBox2, self.ui.RandBox2, self.ui.CapsBox2, self.ui.LetterBox2, self.ui.NumBox2, self.ui.SpecialBox2]
+        self.labels = [self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8, self.ui.label_9]
         self.ui.Nativelabel.setText("")
         self.file = None
-        self.labels = [self.ui.label_5, self.ui.label_6, self.ui.label_7, self.ui.label_8, self.ui.label_9]
+        self._worker = None
+        self._thread = None
         self.reset_settings()
 
-        self.ui.GenerateMultiply.clicked.connect(self.generateMultiply)
+        self.ui.GenerateMultiply.clicked.connect(self.procces_generation)
         self.ui.SelectFile.clicked.connect(self.selectFile)
         self.ui.CancelButton.clicked.connect(self.CancelGeneration)
 
@@ -88,6 +173,8 @@ class ModuleWindow_1(QtWidgets.QDialog):
         if self._iswork and self.ui.lineEdit.isReadOnly():
             choice = QtWidgets.QMessageBox.warning(self, self.tr("Warning"), self.tr("Do you want to stop generation?"), QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
             if choice == QtWidgets.QMessageBox.StandardButton.Yes:
+                if self._thread:
+                    self._worker._iswork = False
                 self.update_native_display(self.tr("Interrupted."))
                 self._iswork = False
         elif self.ui.CancelButton.text() == self.tr("Clear"):
@@ -119,6 +206,44 @@ class ModuleWindow_1(QtWidgets.QDialog):
         else:
             self.update_native_display(self.tr("File selection was interrupted"))
 
+    def check_options(self):
+        length = self.ui.lineEdit_2.text()
+        value = self.ui.lineEdit.text()
+        box_check = [box.isChecked() for box in self.boxes]
+        if not length.isdigit() or int(length) < 1:
+            QtWidgets.QMessageBox.critical(self, self.tr("Length"), self.tr("Incorrect length"))
+            return
+        if not value.isdigit() or int(value) < 1:
+            QtWidgets.QMessageBox.critical(self, self.tr("Value"), self.tr("Please type correct value in the count field"))
+            self.ui.lineEdit.setText("")
+            return
+        if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
+            QtWidgets.QMessageBox.critical(self, self.tr("Options"), self.tr("You haven't selected any option"))
+            return
+        if not self.file:
+            QtWidgets.QMessageBox.critical(self, self.tr("File"), self.tr("You have to select a file to save passwords"))
+            return
+        return True
+
+    def updateLabels(self, size: float, generated_passwords: int, remaining: int, password: str, progressResult: int):
+        self.ui.label_6.setText(self.tr("File size: ") + size)
+        self.ui.label_7.setText(self.tr("Passwords generated: ") + str(generated_passwords))
+        self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(remaining))
+        self.ui.label_9.setText(self.tr('Current password: ') + password)
+        self.ui.progressBar.setValue(progressResult)
+
+    def thread_init(self, length: int, value: int, boxes: dict[str, bool]):
+        self._thread = QtCore.QThread()
+        self._worker = Worker(self.file, length, value, boxes)
+        self._worker.moveToThread(self._thread)
+
+        self._thread.started.connect(self._worker.run)
+        self._worker.finished.connect(self._thread.quit)
+        self._worker.finished.connect(self._worker.deleteLater)
+        self._thread.finished.connect(self._thread.deleteLater)
+
+        self._thread.start()
+
     def generate_password(self, length: int) -> str:
         lists = []
         result = ""
@@ -139,57 +264,70 @@ class ModuleWindow_1(QtWidgets.QDialog):
             result = base64.b64encode(result.encode("utf-8")).decode()
         return result
 
-    def check_options(self):
-        length = self.ui.lineEdit_2.text()
-        value = self.ui.lineEdit.text()
-        box_check = [box.isChecked() for box in self.boxes]
-        if not length.isdigit() or int(length) < 1:
-            QtWidgets.QMessageBox.critical(self, self.tr("Length"), self.tr("Incorrect length"))
-            return
-        if not value.isdigit() or int(value) < 1:
-            QtWidgets.QMessageBox.critical(self, self.tr("Value"), self.tr("Please type correct value in the count field"))
-            self.ui.lineEdit.setText("")
-            return
-        if (not any(box_check)) or (box_check[0] and not any(box_check[1:])) or (box_check[1] and not any(box_check[2:])):
-            QtWidgets.QMessageBox.critical(self, self.tr("Options"), self.tr("You haven't selected any option"))
-            return
-        if not self.file:
-            QtWidgets.QMessageBox.critical(self, self.tr("File"), self.tr("You have to select a file to save passwords"))
-            return
-        return True
-
-    def generateMultiply(self):
-        self.reset_settings()
+    def syncroneGenerator(self, length: int, value: int, mode: str, start=None):  # mode in ("generate", "generate_last")
+        # Synchrone Generator procces
         self._iswork = True
-        length = self.ui.lineEdit_2.text()
-        value = self.ui.lineEdit.text()
-        if not self.check_options():
-            return
-        length = int(length)
-        value = int(value)
-        self.ui.CancelButton.setText("Cancel")
-        for label in self.labels:
-            label.show()
         with open(self.file, "a", encoding="utf-8") as f:
-            self.update_native_display(self.tr("Generation has started..."))
-            self.ui.lineEdit.setReadOnly(True)
-            self.ui.label_5.setText(self.tr("File: ") + self.file.split("/")[-1])
-            remaining = "N/A"
-            start = time.perf_counter()
             for i in range(value):
-                size = int(os.lstat(self.file)[6]) * 8
-                self.ui.label_7.setText(self.tr("Passwords generated: ") + str(i))
-                self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(remaining))
                 if not self._iswork:
                     self.ui.CancelButton.setText(self.tr("Clear"))
                     return
-                self.ui.progressBar.setValue(int((i / value) * 100))
                 result = self.generate_password(length)
-                remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
-                self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(size))
-                self.ui.label_9.setText(self.tr('Current password: ') + result)
+                if mode == "generate":
+                    progressResult = int((i / value) * 100)
+                    size = self.type_of_bit(os.lstat(self.file)[6] * 8)
+                    remaining = int(((time.perf_counter() - start) / (i + 1)) * (value - i - 1)) if i != 0 else 0
+                    self.updateLabels(size, i, remaining, result, progressResult)
                 f.write(result + "\n") if i + 1 != value else f.write(result)
-                app.processEvents()
+
+    def generateMultiply(self, start: float, length: int, value: int, boxes: dict[str, bool]):
+        # Procces generation
+        self.thread_init(length, value, boxes)
+        total_generated = 0
+        while not threads_queue.empty() or self._worker._iswork:
+            try:
+                result = threads_queue.get(timeout=0.2)  # result[0] = passwords_generated, result[1] = password
+                print(result)
+                size = self.type_of_bit(os.lstat(self.file)[6] * 8)
+                total_generated += result[0]
+                password = result[1]
+                print(total_generated)
+                remaining = int(((time.perf_counter() - start) / (total_generated)) * (value - total_generated)) if total_generated != 0 else 0
+                remaining = str(remaining)
+                progress = int((total_generated / value) * 100)
+                self.updateLabels(size, total_generated, remaining, password, progress)
+            except queue.Empty:
+                pass
+
+    def procces_generation(self):
+        self.reset_settings()
+        if not self.check_options():
+            return
+        length = int(self.ui.lineEdit_2.text())
+        value = int(self.ui.lineEdit.text())
+        self.ui.CancelButton.setText("Cancel")
+        for label in self.labels:
+            label.show()
+        self.update_native_display(self.tr("Generation has started..."))
+        self.ui.lineEdit.setReadOnly(True)
+        self.ui.label_5.setText(self.tr("File: ") + self.file.split("/")[-1])
+        start = time.perf_counter()
+        boxes = {
+            "nums": self.ui.NumBox2.isChecked(),
+            "letters": self.ui.LetterBox2.isChecked(),
+            "specialSymbols": self.ui.SpecialBox2.isChecked(),
+            "randLength": self.ui.RandBox2.isChecked(),
+            "caps": self.ui.CapsBox2.isChecked(),
+            "base64": self.ui.BaseBox2.isChecked()
+        }
+        if value > 100_000:
+            remaining = value // WORKERS
+            left = value % WORKERS
+            self.generateMultiply(start, length, remaining, boxes)
+            if left:
+                self.syncroneGenerator(length, left, "generate_last")
+        else:
+            self.syncroneGenerator(length, value, "generate", start)
         self.ui.CancelButton.setText(self.tr("Clear"))
         self.ui.progressBar.setValue(100)
         self._iswork = False
@@ -197,7 +335,7 @@ class ModuleWindow_1(QtWidgets.QDialog):
         self.update_native_display(self.tr("Finished!"))
         self.ui.label_6.setText(self.tr("File size: ") + self.type_of_bit(int(os.lstat(self.file)[6]) * 8))
         self.ui.label_7.setText(self.tr("Passwords generated: ") + str(value))
-        self.ui.label_8.setText(self.tr("Seconds remaining: ") + str(0))
+
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -209,7 +347,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.display = self.tr("Welcome!")
         self.ui.lineEdit.setText(self.display)
         self.boxes = [self.ui.BaseBox, self.ui.RandBox, self.ui.CapsBox, self.ui.LetterBox, self.ui.NumBox, self.ui.SpecialBox]
-        self.version = "1.05"
+        self.version = "1.09"
         self._rippers = (self.tr("You haven't selected any option!"), self.tr("Welcome!"), "")
         self.ui.label_3.setText(self.tr("Version: ") + self.version)
         self.hashes = [self.ui.actionsha512, self.ui.actionMD5, self.ui.actionsha256, self.ui.actionsha_1]
@@ -257,10 +395,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.display not in self._rippers:
             password_copy(self.display)
             self.info_label(self.tr("Copied!"))
-
-    @staticmethod
-    def one_char(array: list[str | int]) -> str:
-        return str(random.choice(array))
 
     def generator(self):
         lists = []
