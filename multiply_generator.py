@@ -319,7 +319,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "MultiGenerator"))
         self.label.setText(_translate("Dialog", "Multiply Generator"))
         self.label_3.setText(_translate("Dialog", "Config"))
-        self.NumBox2.setText(_translate("Dialog", "Numbers"))
+        self.NumBox2.setText(_translate("Dialog", "Digits"))
         self.LetterBox2.setText(_translate("Dialog", "Letters"))
         self.SpecialBox2.setText(_translate("Dialog", "Special Symbols"))
         self.RandBox2.setText(_translate("Dialog", "Random length"))

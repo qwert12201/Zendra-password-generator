@@ -20,7 +20,7 @@
     </message>
     <message>
         <location filename="../module_multiply_generator.ui" line="140"/>
-        <source>Numbers</source>
+        <source>Digits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -132,11 +132,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../design.ui" line="243"/>
-        <source>Numbers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../design.ui" line="259"/>
         <source>Letters</source>
         <translation type="unfinished"></translation>
@@ -162,50 +157,50 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="189"/>
-        <location filename="../main.py" line="193"/>
+        <location filename="../main.py" line="360"/>
+        <location filename="../main.py" line="364"/>
         <source>Welcome!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="193"/>
-        <location filename="../main.py" line="254"/>
+        <location filename="../main.py" line="364"/>
+        <location filename="../main.py" line="426"/>
         <source>You haven&apos;t selected any option!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="194"/>
+        <location filename="../main.py" line="365"/>
         <source>Version: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="238"/>
+        <location filename="../main.py" line="410"/>
         <source>Copied!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="250"/>
+        <location filename="../main.py" line="422"/>
         <location filename="../design.ui" line="386"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="250"/>
+        <location filename="../main.py" line="422"/>
         <source>Incorrect length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="254"/>
+        <location filename="../main.py" line="426"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="274"/>
+        <location filename="../main.py" line="446"/>
         <source>Password has generated!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="292"/>
+        <location filename="../main.py" line="464"/>
         <source>Cleaned!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -215,8 +210,13 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="287"/>
+        <location filename="../main.py" line="459"/>
         <source>Randomized!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../design.ui" line="243"/>
+        <source>Digits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -338,158 +338,156 @@
 <context>
     <name>ModuleWindow_1</name>
     <message>
-        <location filename="../main.py" line="81"/>
+        <location filename="../main.py" line="180"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="81"/>
+        <location filename="../main.py" line="180"/>
         <source>Do you want to stop generation?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="83"/>
+        <location filename="../main.py" line="182"/>
         <source>Interrupted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="85"/>
-        <location filename="../main.py" line="158"/>
-        <location filename="../main.py" line="172"/>
-        <location filename="../main.py" line="176"/>
+        <location filename="../main.py" line="185"/>
+        <location filename="../main.py" line="280"/>
+        <location filename="../main.py" line="343"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="87"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../main.py" line="92"/>
+        <location filename="../main.py" line="193"/>
         <source>0 bits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="93"/>
+        <location filename="../main.py" line="194"/>
         <source>bits</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="93"/>
+        <location filename="../main.py" line="194"/>
         <source>bytes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="93"/>
+        <location filename="../main.py" line="194"/>
         <source>KB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="93"/>
+        <location filename="../main.py" line="194"/>
         <source>MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="93"/>
+        <location filename="../main.py" line="194"/>
         <source>GB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="93"/>
+        <location filename="../main.py" line="194"/>
         <source>TB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="104"/>
+        <location filename="../main.py" line="204"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="109"/>
+        <location filename="../main.py" line="209"/>
         <source>File has selected succesfully!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="111"/>
+        <location filename="../main.py" line="211"/>
         <source>File selection was interrupted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="121"/>
+        <location filename="../main.py" line="218"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="121"/>
+        <location filename="../main.py" line="218"/>
         <source>Incorrect length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="124"/>
+        <location filename="../main.py" line="221"/>
         <source>Please type correct value in the count field</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="124"/>
+        <location filename="../main.py" line="221"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="128"/>
+        <location filename="../main.py" line="225"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="128"/>
+        <location filename="../main.py" line="225"/>
         <source>You haven&apos;t selected any option</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="131"/>
+        <location filename="../main.py" line="228"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="131"/>
+        <location filename="../main.py" line="228"/>
         <source>You have to select a file to save passwords</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="148"/>
+        <location filename="../main.py" line="323"/>
         <source>Generation has started...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="150"/>
+        <location filename="../main.py" line="326"/>
         <source>File: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="155"/>
-        <location filename="../main.py" line="174"/>
+        <location filename="../main.py" line="234"/>
+        <location filename="../main.py" line="350"/>
         <source>Passwords generated: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="156"/>
-        <location filename="../main.py" line="175"/>
+        <location filename="../main.py" line="235"/>
         <source>Seconds remaining: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="168"/>
-        <location filename="../main.py" line="173"/>
+        <location filename="../main.py" line="233"/>
+        <location filename="../main.py" line="349"/>
         <source>File size: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="169"/>
+        <location filename="../main.py" line="187"/>
+        <source>Cleaned!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="236"/>
         <source>Current password: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.py" line="180"/>
+        <location filename="../main.py" line="348"/>
         <source>Finished!</source>
         <translation type="unfinished"></translation>
     </message>
